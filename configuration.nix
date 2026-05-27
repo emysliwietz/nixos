@@ -244,8 +244,8 @@
     exec ${caprine}/bin/caprine "$@"
   '')
 
-  (writeShellScriptBin "mpv" ''
-    exec nvidia-offload ${mpv}/bin/mpv "$@"
+  (writeShellScriptBin "e" ''
+  	    exec emacsclient -c -a "" "$@"
   '')
 
 
