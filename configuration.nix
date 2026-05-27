@@ -241,7 +241,11 @@
   '')
 
   (writeShellScriptBin "e" ''
-  	    exec emacsclient -c -a "" "$@"
+  if [ -t 0 ]; then
+    exec emacsclient -nw -a "" "$@"
+  else
+    exec emacsclient -c -a "" "$@"
+  fi
   '')
 
 
@@ -255,6 +259,7 @@
 		tree-sitter-markdown
 		tree-sitter-markdown-inline
 		tree-sitter-javascript
+		tree-sitter-jsdoc
     		# etc
   	]))
 
