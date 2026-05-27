@@ -221,8 +221,10 @@
 
   programs.git = {
   	enable = true;
-	userName = "Egidius";
-	userEmail = "git@sermak.xyz";
+	settings.user = {
+		name = "Egidius";	
+		email = "git@sermak.xyz";
+	};
   };
 
   home.sessionPath = [
