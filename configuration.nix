@@ -214,11 +214,7 @@
     package = pkgs.emacs30;
   };
 
-  services.emacs = {
-    enable = true;
-    defaultEditor = true;
-  };
-
+  
   programs.git = {
   	enable = true;
 	settings.user = {
