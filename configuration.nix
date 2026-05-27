@@ -161,7 +161,7 @@
     programs.zsh = {
       enable = true;
       shellAliases = {
-        rebuild = "sudo git -C /etc/nixos add . && sudo git -C /etc/nixos commit -m \"$(date '+%F %T')\" || true && sudo nixos-rebuild switch --flake /etc/nixos";
+        rebuild = "sudo git -C /etc/nixos add . && sudo git -C /etc/nixos commit -m \"$(date '+%F %T')\" && sudo git -C /etc/nixos push || true && sudo nixos-rebuild switch --flake /etc/nixos";
 	vim = "nvim";
 	sudo = "sudo ";
 	".." = "cd ..";
@@ -254,6 +254,7 @@
 		tree-sitter-rust
 		tree-sitter-markdown
 		tree-sitter-markdown-inline
+		tree-sitter-javascript
     		# etc
   	]))
 
