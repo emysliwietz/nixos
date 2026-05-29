@@ -221,6 +221,9 @@
 		name = "Egidius";	
 		email = "git@sermak.xyz";
 	};
+    extraConfig = {
+    credential.helper = "store";  # caches in ~/.git-credentials
+  };
   };
 
   home.sessionPath = [
@@ -574,6 +577,14 @@ services.syncthing = {
     };
   };
 };
+
+environment.etc."gitconfig".text = ''
+  [user]
+    name = Your Name
+    email = you@example.com
+  [credential]
+    helper = store
+'';
 
 
 
