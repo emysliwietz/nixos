@@ -248,11 +248,9 @@
   fi
   '')
 
-
-
-
-  	((emacsPackagesFor emacs).treesit-grammars.with-grammars (grammars: with grammars; [
-    		tree-sitter-nix
+(emacsPackagesFor emacs).withPackages (epkgs: [
+  (epkgs.treesit-grammars.with-grammars (grammars: with grammars; [
+   		tree-sitter-nix
     		tree-sitter-python
     		tree-sitter-bash
 		tree-sitter-rust
@@ -260,8 +258,11 @@
 		tree-sitter-markdown-inline
 		tree-sitter-javascript
 		tree-sitter-jsdoc
-    		# etc
-  	]))
+
+  ]))
+])
+
+
 
   # facebook messenger
   caprine
