@@ -5,13 +5,15 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
-    nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -19,7 +21,7 @@
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
- 
+
   boot.kernelModules = [
     "snd-aloop"
   ];
@@ -65,7 +67,7 @@
     openFirewall = true;
   };
 
-    # Tell Xorg/Wayland to use the nvidia driver
+  # Tell Xorg/Wayland to use the nvidia driver
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
@@ -74,7 +76,7 @@
 
     # Power management — lets dGPU fully power off when idle
     powerManagement.enable = true;
-    powerManagement.finegrained = true;  # requires offload mode (set below)
+    powerManagement.finegrained = true; # requires offload mode (set below)
 
     # Quadro P500 is Pascal — open modules require Turing+, so keep this false
     open = false;
@@ -85,10 +87,10 @@
     prime = {
       offload = {
         enable = true;
-        enableOffloadCmd = true;  # adds `nvidia-offload` helper command
+        enableOffloadCmd = true; # adds `nvidia-offload` helper command
       };
 
-      intelBusId  = "PCI:0:2:0";
+      intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:2:0:0";
     };
   };
@@ -133,7 +135,6 @@
     #media-session.enable = true;
   };
 
-
   security.pam.services.sddm.kwallet.enable = true;
   security.pam.services.kscreenlocker.kwallet.enable = true;
 
@@ -144,361 +145,406 @@
   users.users.user = {
     isNormalUser = true;
     description = "Egidius";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     shell = pkgs.zsh;
     packages = with pkgs; [
-	teams-for-linux
-	droidcam
-	qbittorrent
+      teams-for-linux
+      droidcam
+      qbittorrent
 
     ];
   };
 
-  home-manager.useGlobalPkgs = true;    # uses system pkgs, avoids a second nixpkgs eval
-  home-manager.useUserPackages = true;  # installs packages to /etc/profiles/per-user/...
- 
-  home-manager.users.user = { pkgs, ... }: {
-    programs.zsh = {
-      enable = true;
-      shellAliases = {
-        rebuild = "sudo git -C /etc/nixos add . && sudo git -C /etc/nixos commit -m \"$(date '+%F %T')\" && sudo git -C /etc/nixos push || true && sudo nixos-rebuild switch --flake /etc/nixos";
-	vim = "nvim";
-	sudo = "sudo ";
-	".." = "cd ..";
-	"..." = "cd ../..";
-	"...." = "cd ../../..";
+  home-manager.useGlobalPkgs = true; # uses system pkgs, avoids a second nixpkgs eval
+  home-manager.useUserPackages = true; # installs packages to /etc/profiles/per-user/...
+
+  home-manager.users.user =
+    { pkgs, ... }:
+    {
+      programs.zsh = {
+        enable = true;
+
+        dotDir = ".config/zsh";
+        enableCompletion = true;
+        autosuggestion.enable = true;
+        syntaxHighlighting.enable = true;
+
+        history = {
+          size = 10000;
+          ignoreAllDups = true;
+        };
+
+
+        setOptions = [
+          "HIST_IGNORE_ALL_DUPS"
+          "AUTO_CD"
+        ]
+
+        shellAliases = {
+          rebuild = "sudo git -C /etc/nixos add . && sudo git -C /etc/nixos commit -m \"$(date '+%F %T')\" && sudo git -C /etc/nixos push || true && sudo nixos-rebuild switch --flake /etc/nixos";
+          nix-clean = "sudo collect-garbage --delete-older-than 14d && sudo nix-store --gc && sudo nix-store --optimise";
+          vim = "nvim";
+          sudo = "sudo ";
+          ".." = "cd ..";
+          "..." = "cd ../..";
+          "...." = "cd ../../..";
+        };
+
+        initExtra = ''
+            take() {
+                mkdir -p "$1" && cd "$1"
+            }
+        '';
       };
-    };
 
-  home.file.".config/Thunar/uca.xml".text = ''
-    <?xml version="1.0" encoding="UTF-8"?>
-    <actions>
-      <action>
-        <icon>utilities-terminal</icon>
-        <name>Open Terminal Here</name>
-        <submenu></submenu>
-        <unique-id>1234567890123456-1</unique-id>
-        <command>xfce4-terminal --working-directory %f</command>
-        <description>Open terminal in this directory</description>
-        <patterns>*</patterns>
-        <directories/>
-      </action>
+      home.file.".config/Thunar/uca.xml".text = ''
+        <?xml version="1.0" encoding="UTF-8"?>
+        <actions>
+          <action>
+            <icon>utilities-terminal</icon>
+            <name>Open Terminal Here</name>
+            <submenu></submenu>
+            <unique-id>1234567890123456-1</unique-id>
+            <command>xfce4-terminal --working-directory %f</command>
+            <description>Open terminal in this directory</description>
+            <patterns>*</patterns>
+            <directories/>
+          </action>
 
-      <action>
-        <icon>application-pdf</icon>
-        <name>PPTX to PDF</name>
-        <submenu></submenu>
-        <unique-id>1234567890123456-2</unique-id>
-        <command>bash -c 'libreoffice --headless --convert-to pdf "%f"'</command>
-        <description>Convert PPTX to PDF</description>
-        <patterns>*.pptx;*.PPTX</patterns>
-        <files/>
-      </action>
-    </actions>
-  '';
+          <action>
+            <icon>application-pdf</icon>
+            <name>PPTX to PDF</name>
+            <submenu></submenu>
+            <unique-id>1234567890123456-2</unique-id>
+            <command>bash -c 'libreoffice --headless --convert-to pdf "%f"'</command>
+            <description>Convert PPTX to PDF</description>
+            <patterns>*.pptx;*.PPTX</patterns>
+            <files/>
+          </action>
+        </actions>
+      '';
 
-  programs.neovim = {
-    enable = true;
-    defaultEditor = false;
-    viAlias = true;
-    vimAlias = true;
-    extraLuaConfig = ''
-      vim.opt.number = true
-      vim.opt.relativenumber = true
-      vim.opt.clipboard = "unnamedplus"
-    '';
-  };
+      programs.neovim = {
+        enable = true;
+        defaultEditor = false;
+        viAlias = true;
+        vimAlias = true;
+        extraLuaConfig = ''
+          vim.opt.number = true
+          vim.opt.relativenumber = true
+          vim.opt.clipboard = "unnamedplus"
+        '';
+      };
 
-  programs.emacs = {
+programs.fzf = {
   enable = true;
-  package = pkgs.emacs-pgtk;
-  extraPackages = epkgs: [
-    (epkgs.treesit-grammars.with-grammars (grammars: with grammars; [
-	tree-sitter-nix
-    		tree-sitter-python
-    		tree-sitter-bash
-		tree-sitter-rust
-		tree-sitter-markdown
-		tree-sitter-markdown-inline
-		tree-sitter-javascript
-		tree-sitter-jsdoc
+  enableZshIntegration = true;
+};
 
-    ]))
+      programs.starship = {
+  enable = true;
+};
+
+programs.zoxide = {
+  enable = true;
+  enableZshIntegration = true;
+
+  options = [
+    "--cmd cd"
   ];
 };
 
-  
-  programs.git = {
-  	enable = true;
-	settings.user = {
-		name = "Egidius";	
-		email = "git@sermak.xyz";
-	};
-    settings = {
-    credential.helper = "store";  # caches in ~/.git-credentials
-  };
-  };
+      programs.emacs = {
+        enable = true;
+        package = pkgs.emacs-pgtk;
+        extraPackages = epkgs: [
+          (epkgs.treesit-grammars.with-grammars (
+            grammars: with grammars; [
+              tree-sitter-nix
+              tree-sitter-python
+              tree-sitter-bash
+              tree-sitter-rust
+              tree-sitter-markdown
+              tree-sitter-markdown-inline
+              tree-sitter-javascript
+              tree-sitter-jsdoc
 
-  home.sessionPath = [
-  	  "$HOME/.config/emacs/bin"
-  ];
-
-    home.packages = with pkgs; [ 
-  (writeShellScriptBin "mpv" ''
-    exec nvidia-offload ${mpv}/bin/mpv "$@"
-  '')
-
-  (writeShellScriptBin "mpv-cpu" ''
-    exec ${mpv}/bin/mpv "$@"
-  '')
-
-  (writeShellScriptBin "facebook-messenger" ''
-    exec ${caprine}/bin/caprine "$@"
-  '')
-
-  (writeShellScriptBin "e" ''
-  if [ -t 0 ]; then
-    exec emacsclient -nw -a "" "$@"
-  else
-    exec emacsclient -c -a "" "$@"
-  fi
-  '')
-
-  # nix lsp for emacs
-  nixd
-
-  # facebook messenger
-  caprine
-
-  # :checkers spell
-  aspell
-  aspellDicts.en
-
-  ripgrep
-  fd
-
-  nerd-fonts.jetbrains-mono
-  nerd-fonts.symbols-only
-  symbola
-
-  cmake
-  gnumake
-
-  gore
-  jdk
-  pandoc
-  pipenv
-  python3Packages.nose2
-  poetry
-
-  isync
-  mu
-
-  sqlite
-
-  # :tools direnv
-  direnv
-
-  # :tools lookup
-  sqlite
-
-  # :tools lsp
-  nodejs
-
-  # :lang cc
-  clang-tools  # provides clang-format
-
-  # :lang nix
-  nixfmt-rfc-style
-
-  # :lang org
-  graphviz    # provides dot
-  gnuplot
-  maim        # screenshots
-
-  # :lang sh
-  shfmt
-  shellcheck
-
-  # :lang markdown
-  grip
-
-  # :lang python
-  python3
-  black
-  python3Packages.pyflakes
-  python3Packages.isort
-  python3Packages.pytest
-
-  # :lang rust
-  rust-analyzer
-  cargo
-  rustc
-
-  # :lang go
-  gopls
-  gomodifytags
-  gotests
-
-  # :tools docker
-  dockfmt
-
-  # :app rss
-  yt-dlp
-
-  signal-desktop
-
-  koreader
-    ];
-
-    programs.htop = {
-      enable = true;
-      settings = {
-        tree-view = 1;
-	enable_mouse = 1;
-	show_cpu_usage = 1;
-	show_cpu_frequency = 1;
-	show_cpu_temperature = 1;
-	show_program_path = 1;
+            ]
+          ))
+        ];
       };
+
+      programs.git = {
+        enable = true;
+        settings.user = {
+          name = "Egidius";
+          email = "git@sermak.xyz";
+        };
+        settings = {
+          credential.helper = "store"; # caches in ~/.git-credentials
+        };
+      };
+
+      home.sessionPath = [
+        "$HOME/.config/emacs/bin"
+      ];
+
+      home.packages = with pkgs; [
+        (writeShellScriptBin "mpv" ''
+          exec nvidia-offload ${mpv}/bin/mpv "$@"
+        '')
+
+        (writeShellScriptBin "mpv-cpu" ''
+          exec ${mpv}/bin/mpv "$@"
+        '')
+
+        (writeShellScriptBin "facebook-messenger" ''
+          exec ${caprine}/bin/caprine "$@"
+        '')
+
+        (writeShellScriptBin "e" ''
+          if [ -t 0 ]; then
+            exec emacsclient -nw -a "" "$@"
+          else
+            exec emacsclient -c -a "" "$@"
+          fi
+        '')
+
+        # nix lsp for emacs
+        nixd
+
+        # facebook messenger
+        caprine
+
+        # :checkers spell
+        aspell
+        aspellDicts.en
+
+        ripgrep
+        fd
+
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.symbols-only
+        symbola
+
+        cmake
+        gnumake
+
+        gore
+        jdk
+        pandoc
+        pipenv
+        python3Packages.nose2
+        poetry
+
+        isync
+        mu
+
+        sqlite
+
+        # :tools direnv
+        direnv
+
+        # :tools lookup
+        sqlite
+
+        # :tools lsp
+        nodejs
+
+        # :lang cc
+        clang-tools # provides clang-format
+
+        # :lang nix
+        nixfmt-rfc-style
+
+        # :lang org
+        graphviz # provides dot
+        gnuplot
+        maim # screenshots
+
+        # :lang sh
+        shfmt
+        shellcheck
+
+        # :lang markdown
+        grip
+
+        # :lang python
+        python3
+        black
+        python3Packages.pyflakes
+        python3Packages.isort
+        python3Packages.pytest
+
+        # :lang rust
+        rust-analyzer
+        cargo
+        rustc
+
+        # :lang go
+        gopls
+        gomodifytags
+        gotests
+
+        # :tools docker
+        dockfmt
+
+        # :app rss
+        yt-dlp
+
+        signal-desktop
+
+        koreader
+      ];
+
+      programs.htop = {
+        enable = true;
+        settings = {
+          tree-view = 1;
+          enable_mouse = 1;
+          show_cpu_usage = 1;
+          show_cpu_frequency = 1;
+          show_cpu_temperature = 1;
+          show_program_path = 1;
+        };
+      };
+
+      programs.bash.enable = true;
+
+      fonts.fontconfig.enable = true;
+
+      xdg.configFile."autostart/signal-desktop.desktop".text = ''
+        [Desktop Entry]
+        Type=Application
+        Name=Signal
+        Exec=${pkgs.signal-desktop}/bin/signal-desktop --start-in-tray --no-sandbox
+        X-GNOME-Autostart-enabled=true
+      '';
+
+      programs.firefox = {
+        enable = true;
+        nativeMessagingHosts = [ pkgs.keepassxc ];
+        languagePacks = [
+          "en"
+          "de"
+        ];
+
+        profiles.default = {
+          id = 0;
+          isDefault = true;
+
+          search = {
+            default = "ddg";
+            force = true; # prevents Firefox from overriding it on updates
+          };
+
+          settings = {
+            # enable compact mode (hidden option since Firefox 89)
+            "browser.compactmode.show" = true;
+            "browser.uidensity" = 1;
+            "full-screen-api.ignore-widgets" = true;
+          };
+
+        };
+      };
+
+      xdg.autostart.enable = true; # Enable creation of XDG autostart entries.
+
+      programs.keepassxc = {
+        enable = true;
+        autostart = true;
+        settings = {
+          General.ConfigVersion = 2;
+
+          Browser.Enabled = true;
+
+          FdoSecrets = {
+            Enabled = true; # Enable Secret Service Integration
+            ShowNotification = false;
+          };
+
+          GUI = {
+            ShowTrayIcon = true;
+            TrayIconAppearance = "monochrome-light";
+            MinimizeOnStartup = true;
+            MinimizeToTray = true;
+            MinimizeOnClose = true;
+            ApplicationTheme = "dark";
+          };
+
+          Security.IconDownloadFallback = true; # DuckDuckGo fallback for favicons
+        };
+      };
+
+      # Disable KWallet's own secret service so KeePassXC can take over
+      xdg.configFile."kwalletrc".text = ''
+        [Wallet]
+        Enabled=true
+        First Use=false
+
+        [org.freedesktop.secrets]
+        apiEnabled=false
+      '';
+
+      # KeePassXC config: enable secret service + auto-open + lock on sleep
+      xdg.configFile."keepassxc/keepassxc.ini".text = ''
+        [FdoSecrets]
+        Enabled=true
+
+        [General]
+        AutoSaveAfterEveryChange=true
+        AutoTypeDelay=25
+        MinimizeAfterUnlock=true
+        RememberLastKeyFiles=true
+
+        [Security]
+        LockDatabaseIdle=true
+        LockDatabaseIdleSeconds=600
+        LockDatabaseScreenLock=true
+      '';
+
+      #
+      # You should not change this value, even if you update Home Manager. If you do
+      # want to update the value, then make sure to first check the Home Manager
+      # release notes.
+      home.stateVersion = "25.11"; # Please read the comment before changing.
+
     };
-
-
-
-    programs.bash.enable = true;
-
-    fonts.fontconfig.enable = true;
-
-
-xdg.configFile."autostart/signal-desktop.desktop".text = ''
-  [Desktop Entry]
-  Type=Application
-  Name=Signal
-  Exec=${pkgs.signal-desktop}/bin/signal-desktop --start-in-tray --no-sandbox
-  X-GNOME-Autostart-enabled=true
-'';
-
-
-    programs.firefox = {
-  enable = true;
-  nativeMessagingHosts = [ pkgs.keepassxc ];
-  languagePacks = [ "en" "de" ];
-
-  profiles.default = {
-    id = 0;
-    isDefault = true;
-
-    search = {
-      default = "ddg";
-      force = true; # prevents Firefox from overriding it on updates
-    };
-
-    settings = {
-      # enable compact mode (hidden option since Firefox 89)
-      "browser.compactmode.show" = true;
-      "browser.uidensity" = 1;
-      "full-screen-api.ignore-widgets" = true;
-    };
-
-  };
-};
-
-xdg.autostart.enable = true; # Enable creation of XDG autostart entries.
-
-
-programs.keepassxc = {
-  enable = true;
-  autostart = true;
-  settings = {
-    General.ConfigVersion = 2;
-
-    Browser.Enabled = true;
-
-    FdoSecrets = {
-      Enabled = true; # Enable Secret Service Integration
-      ShowNotification = false;
-    };
-
-    GUI = {
-      ShowTrayIcon = true;
-      TrayIconAppearance = "monochrome-light";
-      MinimizeOnStartup = true;
-      MinimizeToTray = true;
-      MinimizeOnClose = true;
-      ApplicationTheme = "dark";
-    };
-
-    Security.IconDownloadFallback = true; # DuckDuckGo fallback for favicons
-  };
-};
-
-
-# Disable KWallet's own secret service so KeePassXC can take over
-xdg.configFile."kwalletrc".text = ''
-  [Wallet]
-  Enabled=true
-  First Use=false
-
-  [org.freedesktop.secrets]
-  apiEnabled=false
-'';
-
-# KeePassXC config: enable secret service + auto-open + lock on sleep
-xdg.configFile."keepassxc/keepassxc.ini".text = ''
-  [FdoSecrets]
-  Enabled=true
-
-  [General]
-  AutoSaveAfterEveryChange=true
-  AutoTypeDelay=25
-  MinimizeAfterUnlock=true
-  RememberLastKeyFiles=true
-
-  [Security]
-  LockDatabaseIdle=true
-  LockDatabaseIdleSeconds=600
-  LockDatabaseScreenLock=true
-'';
-
-
-    #
-    # You should not change this value, even if you update Home Manager. If you do
-    # want to update the value, then make sure to first check the Home Manager
-    # release notes.
-    home.stateVersion = "25.11"; # Please read the comment before changing. 
-
-  };
-
 
   # Install firefox.
   programs.zsh.enable = true;
   programs.kdeconnect.enable = true;
 
-# needed for droidcam bug
-nixpkgs.overlays = [
-  (final: prev: {
-    obs-studio-plugins = prev.obs-studio-plugins // {
-      droidcam-obs = (prev.obs-studio-plugins.droidcam-obs.override {
-        ffmpeg_7 = prev.ffmpeg;
-      }).overrideAttrs (_: {
-        version = "2.4.2-unstable-2025-10-14";
-        src = prev.fetchFromGitHub {
-          owner = "dev47apps";
-          repo = "droidcam-obs-plugin";
-          rev = "161cb95b8dc5fe77185e52a9783dc45c6d137165";
-          sha256 = "sha256-3GClykaJjjmasEnSVGU5jnz+xoznaSYTxBz7jkhj0m4=";
-        };
-      });
-    };
-  })
-];
+  # needed for droidcam bug
+  nixpkgs.overlays = [
+    (final: prev: {
+      obs-studio-plugins = prev.obs-studio-plugins // {
+        droidcam-obs =
+          (prev.obs-studio-plugins.droidcam-obs.override {
+            ffmpeg_7 = prev.ffmpeg;
+          }).overrideAttrs
+            (_: {
+              version = "2.4.2-unstable-2025-10-14";
+              src = prev.fetchFromGitHub {
+                owner = "dev47apps";
+                repo = "droidcam-obs-plugin";
+                rev = "161cb95b8dc5fe77185e52a9783dc45c6d137165";
+                sha256 = "sha256-3GClykaJjjmasEnSVGU5jnz+xoznaSYTxBz7jkhj0m4=";
+              };
+            });
+      };
+    })
+  ];
 
   programs.obs-studio = {
-  	enable = true;
-    	enableVirtualCamera = true;
-    	plugins = with pkgs.obs-studio-plugins; [
-      		droidcam-obs
-    	];
+    enable = true;
+    enableVirtualCamera = true;
+    plugins = with pkgs.obs-studio-plugins; [
+      droidcam-obs
+    ];
   };
   programs.thunar.enable = true;
   programs.thunar.plugins = with pkgs.xfce; [
@@ -506,7 +552,6 @@ nixpkgs.overlays = [
     thunar-volman
   ];
   programs.xfconf.enable = true; # needed to keep thunar config changes without xfce
-
 
   programs.hyprland.enable = true;
 
@@ -516,17 +561,17 @@ nixpkgs.overlays = [
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  	wget
-	kitty
-	ffmpeg
-	killall
-	unzip
-	mpv
-	zathura
-	libreoffice-qt6
-	wl-clipboard
-	neovim
-	nmap
+    wget
+    kitty
+    ffmpeg
+    killall
+    unzip
+    mpv
+    zathura
+    libreoffice-qt6
+    wl-clipboard
+    neovim
+    nmap
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -545,48 +590,52 @@ nixpkgs.overlays = [
   services.tumbler.enable = true; # Thumbnails in thunar
   services.gvfs.enable = true; # Mount, trash in thunar
 
-services.syncthing = {
-  enable = true;
-  user = "user";
-  openDefaultPorts = true;
-  settings = {
-    devices = {
-      "f8" = { id = "RKNFHYR-NIGI2ND-75B5MOJ-MFWWNOR-GCKKCMO-Y2BIJHC-4IHJTUB-MC7CBAB"; };
-      "tolino" = { id = "6ERDEST-MHMOBE4-ZXM5RT6-TWDMCZP-F6X4ENU-N645IWI-AUMPURJ-YNGAHAV"; };
-    };
-    folders = {
-      "books" = {
-        path = "/home/user/dox/books";
-        devices = [ "f8" "tolino" ];
+  services.syncthing = {
+    enable = true;
+    user = "user";
+    openDefaultPorts = true;
+    settings = {
+      devices = {
+        "f8" = {
+          id = "RKNFHYR-NIGI2ND-75B5MOJ-MFWWNOR-GCKKCMO-Y2BIJHC-4IHJTUB-MC7CBAB";
+        };
+        "tolino" = {
+          id = "6ERDEST-MHMOBE4-ZXM5RT6-TWDMCZP-F6X4ENU-N645IWI-AUMPURJ-YNGAHAV";
+        };
       };
-      };
-      
-    };
-  };
-
-  services.keyd = {
-  enable = true;
-  keyboards = {
-    default = {
-      ids = [ "*" ];
-      settings = {
-        main = {
-          capslock = "overload(control, esc)";
+      folders = {
+        "books" = {
+          path = "/home/user/dox/books";
+          devices = [
+            "f8"
+            "tolino"
+          ];
         };
       };
     };
   };
-};
 
-environment.etc."gitconfig".text = ''
-  [user]
-    name = Your Name
-    email = you@example.com
-  [credential]
-    helper = store
-'';
+  services.keyd = {
+    enable = true;
+    keyboards = {
+      default = {
+        ids = [ "*" ];
+        settings = {
+          main = {
+            capslock = "overload(control, esc)";
+          };
+        };
+      };
+    };
+  };
 
-
+  environment.etc."gitconfig".text = ''
+    [user]
+      name = "Egidius"
+      email = "git@sermak.xyz"
+    [credential]
+      helper = store
+  '';
 
   # List of hardware to enable
   hardware.bluetooth.enable = true;
