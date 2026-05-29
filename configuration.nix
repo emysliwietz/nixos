@@ -214,6 +214,24 @@
     package = pkgs.emacs30;
   };
 
+  programs.emacs = {
+  enable = true;
+  package = pkgs.emacs-pgtk;
+  extraPackages = epkgs: [
+    (epkgs.treesit-grammars.with-grammars (grammars: with grammars; [
+	tree-sitter-nix
+    		tree-sitter-python
+    		tree-sitter-bash
+		tree-sitter-rust
+		tree-sitter-markdown
+		tree-sitter-markdown-inline
+		tree-sitter-javascript
+		tree-sitter-jsdoc
+
+    ]))
+  ];
+};
+
   
   programs.git = {
   	enable = true;
@@ -221,7 +239,7 @@
 		name = "Egidius";	
 		email = "git@sermak.xyz";
 	};
-    extraConfig = {
+    settings = {
     credential.helper = "store";  # caches in ~/.git-credentials
   };
   };
@@ -250,21 +268,6 @@
     exec emacsclient -c -a "" "$@"
   fi
   '')
-
-  ((emacsPackagesFor emacs).withPackages (epkgs: [
-  (epkgs.treesit-grammars.with-grammars (grammars: with grammars; [
-   		tree-sitter-nix
-    		tree-sitter-python
-    		tree-sitter-bash
-		tree-sitter-rust
-		tree-sitter-markdown
-		tree-sitter-markdown-inline
-		tree-sitter-javascript
-		tree-sitter-jsdoc
-
-  ]))
-  ]))
-
 
 
   # facebook messenger
