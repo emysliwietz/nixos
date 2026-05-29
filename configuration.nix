@@ -248,7 +248,7 @@
   fi
   '')
 
-(emacsPackagesFor emacs).withPackages (epkgs: [
+  ((emacsPackagesFor emacs).withPackages (epkgs: [
   (epkgs.treesit-grammars.with-grammars (grammars: with grammars; [
    		tree-sitter-nix
     		tree-sitter-python
@@ -260,7 +260,7 @@
 		tree-sitter-jsdoc
 
   ]))
-])
+  ]))
 
 
 
