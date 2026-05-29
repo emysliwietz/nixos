@@ -167,7 +167,6 @@
       programs.zsh = {
         enable = true;
 
-        dotDir = ".config/zsh";
         enableCompletion = true;
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
@@ -192,7 +191,7 @@
           "...." = "cd ../../..";
         };
 
-        initExtra = ''
+        initContent= ''
           take() {
               mkdir -p "$1" && cd "$1"
           }
