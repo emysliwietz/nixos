@@ -210,11 +210,6 @@
   };
 
   programs.emacs = {
-    enable = true;
-    package = pkgs.emacs30;
-  };
-
-  programs.emacs = {
   enable = true;
   package = pkgs.emacs-pgtk;
   extraPackages = epkgs: [
