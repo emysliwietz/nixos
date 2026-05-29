@@ -264,6 +264,8 @@
   fi
   '')
 
+  # nix lsp for emacs
+  nixd
 
   # facebook messenger
   caprine
