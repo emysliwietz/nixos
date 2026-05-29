@@ -177,11 +177,10 @@
           ignoreAllDups = true;
         };
 
-
         setOptions = [
           "HIST_IGNORE_ALL_DUPS"
           "AUTO_CD"
-        ]
+        ];
 
         shellAliases = {
           rebuild = "sudo git -C /etc/nixos add . && sudo git -C /etc/nixos commit -m \"$(date '+%F %T')\" && sudo git -C /etc/nixos push || true && sudo nixos-rebuild switch --flake /etc/nixos";
@@ -194,9 +193,9 @@
         };
 
         initExtra = ''
-            take() {
-                mkdir -p "$1" && cd "$1"
-            }
+          take() {
+              mkdir -p "$1" && cd "$1"
+          }
         '';
       };
 
@@ -239,23 +238,23 @@
         '';
       };
 
-programs.fzf = {
-  enable = true;
-  enableZshIntegration = true;
-};
+      programs.fzf = {
+        enable = true;
+        enableZshIntegration = true;
+      };
 
       programs.starship = {
-  enable = true;
-};
+        enable = true;
+      };
 
-programs.zoxide = {
-  enable = true;
-  enableZshIntegration = true;
+      programs.zoxide = {
+        enable = true;
+        enableZshIntegration = true;
 
-  options = [
-    "--cmd cd"
-  ];
-};
+        options = [
+          "--cmd cd"
+        ];
+      };
 
       programs.emacs = {
         enable = true;
