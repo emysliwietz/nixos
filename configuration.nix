@@ -237,10 +237,6 @@
         '';
       };
 
-      programs.zoom-us = {
-        enable = true;
-      };
-
       programs.fzf = {
         enable = true;
         enableZshIntegration = true;
@@ -317,6 +313,8 @@
 
         # RDC/VNC Client
         kdePackages.krdc
+	# zoom
+	zoom-us
 
         # nix lsp for emacs
         nixd
