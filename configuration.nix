@@ -191,7 +191,7 @@
           "...." = "cd ../../..";
         };
 
-        initContent= ''
+        initContent = ''
           take() {
               mkdir -p "$1" && cd "$1"
           }
@@ -237,11 +237,16 @@
         '';
       };
 
+      programs.zoom-us = {
+        enable = true;
+      };
+
       programs.fzf = {
         enable = true;
         enableZshIntegration = true;
       };
 
+      # Shell Prompt
       programs.starship = {
         enable = true;
       };
@@ -269,7 +274,6 @@
               tree-sitter-markdown-inline
               tree-sitter-javascript
               tree-sitter-jsdoc
-
             ]
           ))
         ];
@@ -310,6 +314,9 @@
             exec emacsclient -c -a "" "$@"
           fi
         '')
+
+        # RDC/VNC Client
+        kdePackages.krdc
 
         # nix lsp for emacs
         nixd
