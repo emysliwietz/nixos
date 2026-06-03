@@ -221,6 +221,10 @@
           enable_audio_bell = 0;
           # background_blur = 5;
         };
+	font = {
+          name = "SauceCodePro Nerd Font";
+	  size = "12";
+	};
       };
 
       home.file.".config/Thunar/uca.xml".text = ''
