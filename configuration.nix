@@ -267,7 +267,7 @@
           selection-clipboard = "clipboard";
           recolor-keephue = "true";
           recolor = "true";
-          guioptions = '';
+          guioptions = "";
           window-title-home-tilde = "true";
           statusbar-basename = "true";
           adjust-open = "best-fit";
