@@ -25,8 +25,7 @@ in
 
   # Reproduces what the .deb's postinst did:
   boot.extraModprobeConfig = ''
-    options v4l2loopback exclusive_caps=1 devices=1 \
-      card_label="Iriun Webcam,Iriun Webcam #2,Iriun Webcam #3,Iriun Webcam #4"
+    options v4l2loopback exclusive_caps=1 devices=1
     options snd-aloop enable=1 index=7
   '';
 
