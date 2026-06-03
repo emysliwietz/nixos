@@ -24,7 +24,6 @@
 
   boot.kernelModules = [
     "snd-aloop"
-    "v4l2loopback"
   ];
 
   networking.hostName = "astaroth"; # Define your hostname.
@@ -573,7 +572,7 @@
 
   programs.obs-studio = {
     enable = true;
-    enableVirtualCamera = true;
+    enableVirtualCamera = false;
     plugins = with pkgs.obs-studio-plugins; [
     ];
   };
