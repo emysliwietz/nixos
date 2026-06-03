@@ -12,7 +12,8 @@
       system = "x86_64-linux";
       modules = [
         ./configuration.nix
-	./packages/iriunwebcam-module.nix
+	./packages/iriunwebcam/iriunwebcam-module.nix
+	./packages/starship-prompt/starship-module.nix
         home-manager.nixosModules.home-manager {
 	}
       ];
