@@ -182,7 +182,7 @@
 
         shellAliases = {
           rebuild = "sudo git -C /etc/nixos add . && sudo git -C /etc/nixos commit -m \"$(date '+%F %T')\" && sudo git -C /etc/nixos push || true && sudo nixos-rebuild switch --flake /etc/nixos";
-          nix-clean = "sudo collect-garbage --delete-older-than 14d && sudo nix-store --gc && sudo nix-store --optimise";
+          nix-clean = "sudo nix-collect-garbage --delete-older-than 14d && sudo nix-store --gc && sudo nix-store --optimise";
           vim = "nvim";
           sudo = "sudo ";
           ".." = "cd ..";
