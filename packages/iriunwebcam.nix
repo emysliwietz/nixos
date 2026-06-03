@@ -45,6 +45,7 @@ stdenv.mkDerivation rec {
     # "suspicious ownership or permission". ar + tar --no-same-owner forces
     # everything to be owned by the build user.
     ar x "$src"
+    mkdir -p "$out"
     tar --no-same-owner --no-same-permissions \
         --zstd -xf data.tar.zst -C "$out"
 
