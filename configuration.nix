@@ -198,6 +198,31 @@
         '';
       };
 
+      programs.kitty = {
+        enable = true;
+        enableGitIntegration = true;
+        shellIntegration.enableZshIntegration = true;
+        keybindings = {
+          "super+q" = "quit";
+          "cmd+c" = "copy_to_clipboard";
+          "cmd+v" = "paste_from_clipboard";
+          "alt+c" = "copy_to_clipboard";
+          "alt+v" = "paste_from_clipboard";
+          "alt+ctrl+plus" = "change_font_size all +2.0";
+          "alt+ctrl+minus" = "change_font_size all -2.0";
+          "ctrl+kp_add" = "change_font_size all +2.0";
+          "ctrl+kp_subtract" = "change_font_size all -2.0";
+        };
+        settings = {
+          confirm_os_window_close = 0;
+          copy_on_select = yes;
+          dynamic_background_opacity = 1;
+          background_opacity = 0.8;
+          enable_audio_bell = 0;
+          # background_blur = 5;
+        };
+      };
+
       home.file.".config/Thunar/uca.xml".text = ''
         <?xml version="1.0" encoding="UTF-8"?>
         <actions>
@@ -584,7 +609,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    kitty
     ffmpeg
     killall
     unzip
