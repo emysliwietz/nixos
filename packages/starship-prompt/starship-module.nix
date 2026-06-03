@@ -91,14 +91,13 @@
         format             = "[ $path ]($style)";
         truncation_length  = 3;
         truncation_symbol  = "…/";
-      };
-
-      "directory.substitutions" = {
-        "Documents" = "󰈙 ";
-        "Downloads" = " ";
-        "Music"     = "󰝚 ";
-        "Pictures"  = " ";
-        "Developer" = "󰲋 ";
+        substitutions = {
+          "Documents" = "󰈙 ";
+          "Downloads" = " ";
+          "Music"     = "󰝚 ";
+          "Pictures"  = " ";
+          "Developer" = "󰲋 ";
+        };
       };
 
       git_branch = {
