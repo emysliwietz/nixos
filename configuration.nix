@@ -10,10 +10,6 @@
     ./hardware-configuration.nix
   ];
 
-  modules = [
-    ./packages/iriunwebcam-module.nix
-  ];
-
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"

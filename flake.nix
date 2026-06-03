@@ -12,6 +12,7 @@
       system = "x86_64-linux";
       modules = [
         ./configuration.nix
+	./packages/iriunwebcam-module.nix
         home-manager.nixosModules.home-manager {
 	}
       ];
