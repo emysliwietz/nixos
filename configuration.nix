@@ -223,7 +223,7 @@
         };
 	font = {
           name = "SauceCodePro Nerd Font";
-	  size = "12";
+	  size = 12;
 	};
       };
 
