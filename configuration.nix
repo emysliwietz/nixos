@@ -215,7 +215,7 @@
         };
         settings = {
           confirm_os_window_close = 0;
-          copy_on_select = yes;
+          copy_on_select = "yes";
           dynamic_background_opacity = 1;
           background_opacity = 0.8;
           enable_audio_bell = 0;
