@@ -39,6 +39,6 @@ in
   # ── Device access ────────────────────────────────────────────────────────────
   # Your user needs `video` (for /dev/video*) and `audio` (for ALSA loopback).
   # Either add this here:
-  #   users.users."yourusername".extraGroups = [ "video" "audio" ];
+  users.users."user".extraGroups = [ "video" "audio" ];
   # Or add it wherever you already configure your user.
 }
