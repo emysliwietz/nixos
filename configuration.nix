@@ -202,6 +202,8 @@
         '';
       };
 
+      shell = pkgs.zsh;
+
       programs.kitty = {
         enable = true;
         enableGitIntegration = true;
