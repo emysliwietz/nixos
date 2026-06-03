@@ -256,6 +256,25 @@
         ];
       };
 
+      programs.zathura = {
+        enable = true;
+        mappings = {
+          i = "recolor";
+          n = "navigate next";
+          p = "navigate previous";
+        };
+        options = {
+          selection-clipboard = "clipboard";
+          recolor-keephue = "true";
+          recolor = "true";
+          guioptions = '';
+          window-title-home-tilde = "true";
+          statusbar-basename = "true";
+          adjust-open = "best-fit";
+          scroll-page-aware = "true";
+        };
+      };
+
       programs.emacs = {
         enable = true;
         package = pkgs.emacs-pgtk;
@@ -313,8 +332,8 @@
 
         # RDC/VNC Client
         kdePackages.krdc
-	# zoom
-	zoom-us
+        # zoom
+        zoom-us
 
         # nix lsp for emacs
         nixd
@@ -570,7 +589,6 @@
     killall
     unzip
     mpv
-    zathura
     libreoffice-qt6
     wl-clipboard
     neovim
