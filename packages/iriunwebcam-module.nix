@@ -36,9 +36,6 @@ in
     pkgs.android-tools   # adb — needed for USB connection mode
   ];
 
-  # Lets adb talk to Android devices without root
-  services.udev.packages = [ pkgs.android-udev-rules ];
-
   # ── Device access ────────────────────────────────────────────────────────────
   # Your user needs `video` (for /dev/video*) and `audio` (for ALSA loopback).
   # Either add this here:
