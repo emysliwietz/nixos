@@ -24,6 +24,7 @@
 
   boot.kernelModules = [
     "snd-aloop"
+    "v4l2loopback"
   ];
 
   networking.hostName = "astaroth"; # Define your hostname.
@@ -152,7 +153,6 @@
     shell = pkgs.zsh;
     packages = with pkgs; [
       teams-for-linux
-      droidcam
       qbittorrent
 
     ];
@@ -565,32 +565,11 @@
   programs.zsh.enable = true;
   programs.kdeconnect.enable = true;
 
-  # needed for droidcam bug
-  nixpkgs.overlays = [
-    (final: prev: {
-      obs-studio-plugins = prev.obs-studio-plugins // {
-        droidcam-obs =
-          (prev.obs-studio-plugins.droidcam-obs.override {
-            ffmpeg_7 = prev.ffmpeg;
-          }).overrideAttrs
-            (_: {
-              version = "2.4.2-unstable-2025-10-14";
-              src = prev.fetchFromGitHub {
-                owner = "dev47apps";
-                repo = "droidcam-obs-plugin";
-                rev = "161cb95b8dc5fe77185e52a9783dc45c6d137165";
-                sha256 = "sha256-3GClykaJjjmasEnSVGU5jnz+xoznaSYTxBz7jkhj0m4=";
-              };
-            });
-      };
-    })
-  ];
 
   programs.obs-studio = {
     enable = true;
     enableVirtualCamera = true;
     plugins = with pkgs.obs-studio-plugins; [
-      droidcam-obs
     ];
   };
   programs.thunar.enable = true;
