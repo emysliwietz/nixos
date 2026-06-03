@@ -375,6 +375,7 @@
 
         nerd-fonts.jetbrains-mono
         nerd-fonts.symbols-only
+	nerd-fonts.source-code-pro
         symbola
 
         cmake
