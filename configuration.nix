@@ -19,6 +19,11 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.loader.systemd-boot.extraInstallCommands = ''
+  	latest=$(ls /boot/loader/entries/nixos-generation-*.conf | sort -V | tail -n1 | xargs basename)
+  	bootctl set-default "$latest"
+  '';
+
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 

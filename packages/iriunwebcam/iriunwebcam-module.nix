@@ -29,6 +29,17 @@ in
     options snd-aloop enable=1 index=7
   '';
 
+  # ── Network discovery ───────────────────────────────────────────────────────
+  # Iriun uses avahi/mDNS to find the phone, and TCP/UDP 9901 for streaming.
+  services.avahi = {
+    enable       = true;
+    nssmdns4     = true;   # resolves .local hostnames
+    openFirewall = true;   # opens UDP 5353 for mDNS
+  };
+ 
+  networking.firewall.allowedTCPPorts = [ 9901 ];
+  networking.firewall.allowedUDPPorts = [ 9901 ];
+
   # ── Packages ────────────────────────────────────────────────────────────────
   environment.systemPackages = [
     iriunwebcam
