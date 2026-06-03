@@ -158,7 +158,6 @@
     packages = with pkgs; [
       teams-for-linux
       qbittorrent
-
     ];
   };
 
@@ -201,8 +200,6 @@
           }
         '';
       };
-
-      shell = pkgs.zsh;
 
       programs.kitty = {
         enable = true;
