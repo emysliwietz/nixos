@@ -18,7 +18,7 @@
   nix.settings.trusted-users = [
     "root"
     "user"
-  ]
+  ];
 
 
   # Bootloader.
