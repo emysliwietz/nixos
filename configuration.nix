@@ -198,6 +198,11 @@
         '';
       };
 
+      programs.direnv = {
+        enable = true;
+        enableZshIntegration = true;
+      }
+
       programs.kitty = {
         enable = true;
         enableGitIntegration = true;
