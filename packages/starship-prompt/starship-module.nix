@@ -21,7 +21,7 @@
     enable = true;
 
     settings = {
-"$schema" = 'https://starship.rs/config-schema.json'
+"$schema" = \"https://starship.rs/config-schema.json\"
 
 format = """
 [](color_orange)\
