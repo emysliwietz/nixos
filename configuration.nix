@@ -364,6 +364,8 @@
           fi
         '')
 
+        devenv
+
         # RDC/VNC Client
         kdePackages.krdc
         # zoom
