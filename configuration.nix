@@ -15,6 +15,12 @@
     "flakes"
   ];
 
+  nix.settings.trusted-users = [
+    "root"
+    "user"
+  ]
+
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
