@@ -12,36 +12,42 @@
     enable = true;
     settings = {
 
-      format = lib.concatStrings [
-        "[](fg:violet)"
-        "$os"
-        "$username"
-        "[](fg:violet bg:blue)"
-        "$directory"
-        "[](fg:blue bg:cyan)"
-        "$git_branch"
-        "$git_status"
-        "[](fg:cyan bg:green)"
-        "$c"
-        "$cpp"
-        "$rust"
-        "$golang"
-        "$nodejs"
-        "$bun"
-        "$php"
-        "$java"
-        "$kotlin"
-        "$haskell"
-        "$python"
-        "[](fg:green bg:bg2)"
-        "$docker_context"
-        "$conda"
-        "[](fg:bg2 bg:bg1)"
-        "$time"
-        "[ ](fg:bg1)"
-        "$line_break"
-        "$character"
-      ];
+format = lib.concatStrings [
+  "[](fg:violet)"
+  "$os"
+  "$username"
+
+  "[](fg:violet bg:blue)"
+  "$directory"
+
+  "[](fg:blue bg:cyan)"
+  "$git_branch"
+  "$git_status"
+
+  "[](fg:cyan bg:green)"
+  "$c"
+  "$cpp"
+  "$rust"
+  "$golang"
+  "$nodejs"
+  "$bun"
+  "$php"
+  "$java"
+  "$kotlin"
+  "$haskell"
+  "$python"
+
+  "[](fg:green bg:bg2)"
+  "$docker_context"
+  "$conda"
+
+  "[](fg:bg2 bg:bg1)"
+  "$time"
+
+  "[](fg:bg1)"
+  "$line_break"
+  "$character"
+];
 
       palette = "doom_one";
 
@@ -93,10 +99,11 @@
         truncation_symbol  = "…/";
         substitutions = {
           "Documents" = "󰈙 ";
-          "Downloads" = " ";
+          "Downloads" = "󰇚";
           "Music"     = "󰝚 ";
-          "Pictures"  = " ";
+          "Pictures"  = "󰉏 ";
           "Developer" = "󰲋 ";
+	  "Screenshots" = "󱣴 ";
         };
       };
 
