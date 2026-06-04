@@ -371,6 +371,7 @@
         '')
 
         devenv
+	claude-code
 
         # RDC/VNC Client
         kdePackages.krdc
