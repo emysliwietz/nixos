@@ -13,7 +13,7 @@
       modules = [
         ./configuration.nix
 	./packages/iriunwebcam/iriunwebcam-module.nix
-	./packages/starship-prompt/starship-module.nix
+#	./packages/starship-prompt/starship-module.nix
         home-manager.nixosModules.home-manager {
 	}
       ];
