@@ -1,195 +1,272 @@
-# starship-module.nix
-# Starship prompt — Doom One Dark × Powerline
+# starship-module.nix — Doom One Dark × Powerline
+#
+# A faithful port of the official Gruvbox Rainbow preset
+# (https://starship.rs/presets/gruvbox-rainbow) recoloured with the
+# Doom One Dark palette.
 #
 # Usage (home-manager):
 #   imports = [ ./starship-module.nix ];
 #
-# Requires a Nerd Font (e.g. JetBrainsMono Nerd Font) in your terminal.
+# Prerequisite: a Nerd Font installed and selected in your terminal.
 #
 # Prompt layout:
-#  [navy: os · user] ▶ [blue: dir] ▶ [purple: git] ▶ [teal: lang] ▶ [yellow: dur] ▶
-#  ❯
+#   [orange: os·user] ▶ [yellow: dir] ▶ [teal: git] ▶ [navy: langs+nix]
+#   ▶ [gray: docker·conda] ▶ [dark: time] ▶
+#   ❯
 
 { lib, ... }:
 
-let
-  # ── Doom One Dark palette ──────────────────────────────────────────────────
-  c = {
-    bg     = "#282c34";
-    fg     = "#bbc2cf";
-    red    = "#ff6c6b";
-    orange = "#da8548";
-    yellow = "#ecbe7b";
-    green  = "#98be65";
-    teal   = "#4db5bd";
-    blue   = "#51afef";
-    navy   = "#2257a0";
-    purple = "#c678dd";
-    violet = "#a9a1e1";
-    cyan   = "#46d9ff";
-  };
-in
 {
   programs.starship = {
     enable = true;
 
     settings = {
+      "$schema" = "https://starship.rs/config-schema.json";
 
-      # ── Global ──────────────────────────────────────────────────────────────
-      add_newline  = true;
-      scan_timeout = 10;
-
-      # Powerline format — each [](fg:PREV bg:NEXT) is the hard separator.
+      # ── Powerline format ─────────────────────────────────────────────────────
+      #
+      # Each [](fg:PREV bg:NEXT) is a Nerd Font powerline arrow () that
+      # bridges the two adjacent pill colours.  lib.concatStrings avoids TOML
+      # line-continuation syntax altogether.
       format = lib.concatStrings [
-        # ▌ navy pill: OS + username
-        "[](fg:${c.navy})"
+        # pill 1 — OS + user  (orange)
+        "[](color_orange)"
         "$os"
         "$username"
-        # ▶ navy → blue
-        "[](fg:${c.navy} bg:${c.blue})"
-        # ▌ blue pill: directory
+        # arrow orange → yellow
+        "[](bg:color_yellow fg:color_orange)"
+        # pill 2 — directory  (yellow)
         "$directory"
-        # ▶ blue → purple
-        "[](fg:${c.blue} bg:${c.purple})"
-        # ▌ purple pill: git
+        # arrow yellow → teal
+        "[](fg:color_yellow bg:color_aqua)"
+        # pill 3 — git  (teal)
         "$git_branch"
         "$git_status"
-        # ▶ purple → teal
-        "[](fg:${c.purple} bg:${c.teal})"
-        # ▌ teal pill: language versions + nix-shell
-        "$nodejs"
+        # arrow teal → navy
+        "[](fg:color_aqua bg:color_blue)"
+        # pill 4 — language versions + nix-shell  (navy)
+        "$c"
+        "$cpp"
         "$rust"
-        "$python"
         "$golang"
+        "$nodejs"
+        "$bun"
+        "$php"
+        "$java"
+        "$kotlin"
+        "$haskell"
+        "$python"
         "$nix_shell"
-        # ▶ teal → yellow
-        "[](fg:${c.teal} bg:${c.yellow})"
-        # ▌ yellow pill: command duration
-        "$cmd_duration"
-        # ▶ yellow → terminal
-        "[](fg:${c.yellow})"
-        # Second line: prompt character
-        "\n$character"
+        # arrow navy → dark-gray
+        "[](fg:color_blue bg:color_bg3)"
+        # pill 5 — docker / conda  (dark-gray)
+        "$docker_context"
+        "$conda"
+        # arrow dark-gray → near-black
+        "[](fg:color_bg3 bg:color_bg1)"
+        # pill 6 — clock  (near-black)
+        "$time"
+        # closing arrow → terminal background
+        "[ ](fg:color_bg1)"
+        # second line
+        "$line_break$character"
       ];
+
+      # ── Doom One Dark palette ────────────────────────────────────────────────
+      palette = "doom_one_dark";
+
+      palettes.doom_one_dark = {
+        color_fg0    = "#bbc2cf"; # foreground  — text on every pill
+        color_bg1    = "#21242b"; # near-black  — clock pill
+        color_bg3    = "#3f444a"; # dark gray   — docker / conda pill
+        color_blue   = "#2257a0"; # navy        — language pill
+        color_aqua   = "#4db5bd"; # teal        — git pill
+        color_green  = "#98be65"; # success prompt char
+        color_orange = "#da8548"; # orange      — os / user pill
+        color_purple = "#c678dd"; # vim-replace prompt char
+        color_red    = "#ff6c6b"; # error prompt char
+        color_yellow = "#ecbe7b"; # yellow      — directory pill
+      };
 
       # ── OS ──────────────────────────────────────────────────────────────────
       os = {
         disabled = false;
-        style    = "bg:${c.navy} fg:${c.fg}";
+        style    = "bg:color_orange fg:color_fg0";
         symbols  = {
-          NixOS   = " ";
-          Linux   = " ";
-          Macos   = " ";
-          Windows = "󰍲 ";
-          Ubuntu  = " ";
-          Fedora  = " ";
-          Arch    = " ";
-          Debian  = " ";
-          Pop     = " ";
+          NixOS            = " ";
+          Linux            = "󰌽 ";
+          Macos            = "󰀵 ";
+          Windows          = "󰍲 ";
+          Ubuntu           = "󰕈 ";
+          SUSE             = " ";
+          Raspbian         = "󰐿 ";
+          Mint             = "󰣭 ";
+          Manjaro          = " ";
+          Gentoo           = "󰣨 ";
+          Fedora           = "󰣛 ";
+          Alpine           = " ";
+          Amazon           = " ";
+          Android          = " ";
+          AOSC             = " ";
+          Arch             = "󰣇 ";
+          Artix            = "󰣇 ";
+          CentOS           = " ";
+          Debian           = "󰣚 ";
+          EndeavourOS      = " ";
+          Pop              = " ";
+          Redhat           = "󱄛 ";
+          RedHatEnterprise = "󱄛 ";
         };
       };
 
       # ── Username ────────────────────────────────────────────────────────────
       username = {
-        disabled    = false;
         show_always = true;
-        style_user  = "bg:${c.navy} fg:${c.fg}";
-        style_root  = "bg:${c.navy} fg:${c.red}";  # red tint for root
+        style_user  = "bg:color_orange fg:color_fg0";
+        style_root  = "bg:color_orange fg:color_fg0";
         format      = "[ $user ]($style)";
       };
 
       # ── Directory ───────────────────────────────────────────────────────────
       directory = {
-        style             = "bg:${c.blue} fg:${c.bg}";
+        style             = "fg:color_fg0 bg:color_yellow";
         format            = "[ $path ]($style)";
-        truncation_length = 4;
+        truncation_length = 3;
         truncation_symbol = "…/";
         substitutions     = {
-          "~"          = "~";
-          "Documents"  = "󰈙 ";
-          "Downloads"  = " ";
-          "Music"      = " ";
-          "Pictures"   = " ";
-          "Projects"   = "󰲋 ";
-          ".config"    = " ";
+          "Documents" = "󰈙 ";
+          "Downloads" = " ";
+          "Music"     = "󰝚 ";
+          "Pictures"  = " ";
+          "Developer" = "󰲋 ";
+          ".config"   = " ";
         };
       };
 
-      # ── Git branch ──────────────────────────────────────────────────────────
+      # ── Git ─────────────────────────────────────────────────────────────────
+      # The double-bracket pattern [[ inner ](style)]($style) ensures the
+      # segment is hidden entirely when empty, while still letting the inner
+      # content carry explicit fg + bg colours.
       git_branch = {
-        symbol = " ";
-        style  = "bg:${c.purple} fg:${c.bg}";
-        format = "[ $symbol$branch ]($style)";
+        symbol = "";
+        style  = "bg:color_aqua";
+        format = "[[ $symbol $branch ](fg:color_fg0 bg:color_aqua)]($style)";
       };
 
-      # ── Git status ──────────────────────────────────────────────────────────
       git_status = {
-        style      = "bg:${c.purple} fg:${c.bg}";
-        format     = "([$all_status$ahead_behind ]($style))";
-        conflicted = "⚡";
-        ahead      = "⇡\${count}";
-        behind     = "⇣\${count}";
-        diverged   = "⇕⇡\${ahead_count}⇣\${behind_count}";
-        up_to_date = "";       # clean — show nothing
-        untracked  = "?";
-        stashed    = "󰏗";
-        modified   = "!";
-        staged     = "+";
-        renamed    = "»";
-        deleted    = "✘";
+        style  = "bg:color_aqua";
+        format = "[[($all_status$ahead_behind )](fg:color_fg0 bg:color_aqua)]($style)";
       };
 
-      # ── Node.js ─────────────────────────────────────────────────────────────
-      nodejs = {
+      # ── Languages — all share the navy pill ─────────────────────────────────
+      c = {
         symbol = " ";
-        style  = "bg:${c.teal} fg:${c.bg}";
-        format = "[ $symbol$version ]($style)";
+        style  = "bg:color_blue";
+        format = "[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)";
       };
 
-      # ── Rust ────────────────────────────────────────────────────────────────
+      cpp = {
+        symbol = " ";
+        style  = "bg:color_blue";
+        format = "[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)";
+      };
+
       rust = {
-        symbol = " ";
-        style  = "bg:${c.teal} fg:${c.bg}";
-        format = "[ $symbol$version ]($style)";
+        symbol = "";
+        style  = "bg:color_blue";
+        format = "[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)";
       };
 
-      # ── Python ──────────────────────────────────────────────────────────────
-      python = {
-        symbol = " ";
-        style  = "bg:${c.teal} fg:${c.bg}";
-        format = "[ $symbol$version ]($style)";
-      };
-
-      # ── Go ──────────────────────────────────────────────────────────────────
       golang = {
-        symbol = " ";
-        style  = "bg:${c.teal} fg:${c.bg}";
-        format = "[ $symbol$version ]($style)";
+        symbol = "";
+        style  = "bg:color_blue";
+        format = "[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)";
       };
 
-      # ── Nix shell ───────────────────────────────────────────────────────────
+      nodejs = {
+        symbol = "";
+        style  = "bg:color_blue";
+        format = "[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)";
+      };
+
+      bun = {
+        symbol = "";
+        style  = "bg:color_blue";
+        format = "[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)";
+      };
+
+      php = {
+        symbol = "";
+        style  = "bg:color_blue";
+        format = "[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)";
+      };
+
+      java = {
+        symbol = " ";
+        style  = "bg:color_blue";
+        format = "[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)";
+      };
+
+      kotlin = {
+        symbol = "";
+        style  = "bg:color_blue";
+        format = "[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)";
+      };
+
+      haskell = {
+        symbol = "";
+        style  = "bg:color_blue";
+        format = "[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)";
+      };
+
+      python = {
+        symbol = "";
+        style  = "bg:color_blue";
+        format = "[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)";
+      };
+
+      # Bonus: Nix shell indicator — lights up inside nix develop / nix-shell
       nix_shell = {
         symbol      = " ";
-        style       = "bg:${c.teal} fg:${c.bg}";
-        format      = "[ $symbol$state ]($style)";
+        style       = "bg:color_blue";
+        format      = "[[ $symbol$state ](fg:color_fg0 bg:color_blue)]($style)";
         impure_msg  = "impure";
         pure_msg    = "pure";
         unknown_msg = "?";
       };
 
-      # ── Command duration ────────────────────────────────────────────────────
-      cmd_duration = {
-        min_time          = 500;    # only show if command took ≥ 500 ms
-        show_milliseconds = false;
-        style             = "bg:${c.yellow} fg:${c.bg}";
-        format            = "[ ⏱ $duration ]($style)";
+      # ── Context (docker / conda) ────────────────────────────────────────────
+      docker_context = {
+        symbol = "";
+        style  = "bg:color_bg3";
+        format = "[[ $symbol( $context) ](fg:#83a598 bg:color_bg3)]($style)";
       };
+
+      conda = {
+        style  = "bg:color_bg3";
+        format = "[[ $symbol( $environment) ](fg:#83a598 bg:color_bg3)]($style)";
+      };
+
+      # ── Clock ───────────────────────────────────────────────────────────────
+      time = {
+        disabled    = false;
+        time_format = "%R";          # 24 h HH:MM
+        style       = "bg:color_bg1";
+        format      = "[[  $time ](fg:color_fg0 bg:color_bg1)]($style)";
+      };
+
+      # ── Line break (separates the pill row from the prompt character) ────────
+      line_break.disabled = false;
 
       # ── Prompt character ────────────────────────────────────────────────────
       character = {
-        success_symbol = "[❯](bold ${c.green})";
-        error_symbol   = "[❯](bold ${c.red})";
-        vimcmd_symbol  = "[❮](bold ${c.blue})";
+        disabled                  = false;
+        success_symbol            = "[❯](bold fg:color_green)";
+        error_symbol              = "[❯](bold fg:color_red)";
+        vimcmd_symbol             = "[❮](bold fg:color_green)";
+        vimcmd_replace_one_symbol = "[❮](bold fg:color_purple)";
+        vimcmd_replace_symbol     = "[❮](bold fg:color_purple)";
+        vimcmd_visual_symbol      = "[❮](bold fg:color_yellow)";
       };
     };
   };
