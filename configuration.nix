@@ -404,7 +404,6 @@
         pandoc
         pipenv
         python3Packages.nose2
-	python3Packages.snowballstemmer
         poetry
 
         isync
@@ -440,7 +439,12 @@
         grip
 
         # :lang python
-        python3
+        (python3.withPackages (python-pkgs: with python-pkgs; [
+	  pandas
+	  requests
+	  numpy
+	  snowballstemmer
+	]))
         black
         python3Packages.pyflakes
         python3Packages.isort
