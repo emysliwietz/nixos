@@ -404,6 +404,7 @@
         pandoc
         pipenv
         python3Packages.nose2
+	python3Packages.snowballstemmer
         poetry
 
         isync
