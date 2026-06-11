@@ -324,7 +324,7 @@
 
         font = {
           name = "SauceCodePro Semibold";
-          size = "10";
+          size = 10;
         };
 
         cursorTheme = {
