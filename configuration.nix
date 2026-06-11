@@ -547,7 +547,7 @@
           DisableTelemetry = true;
           DisableFirefoxStudies = true;
           DontCheckDefaultBrowser = true;
-          DefaultDownloadDirectory = "${config.home.homeDirectory}/downloads";
+          DefaultDownloadDirectory = "/home/user/downloads";
         };
 
         profiles.default = {
