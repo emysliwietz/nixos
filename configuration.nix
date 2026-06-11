@@ -322,9 +322,27 @@
              name = "Flat-Remix-GTK-Brown-Darkest";
            };
 
+        font = {
+          name = "SauceCodePro Semibold";
+          size = "10";
+        };
+
+        cursorTheme = {
+          name = "breeze_cursors";
+          size = 24;
+        };
+
         iconTheme = {
           package = pkgs.flat-remix-icon-theme;
           name = "Flat-Remix-Brown-Darkest";
+        };
+
+        gtk3.extraConfig = {
+          gtk-application-prefer-dark-theme = true;
+        };
+
+        gtk4.extraConfig = {
+          gtk-application-prefer-dark-theme = true;
         };
       };
 
