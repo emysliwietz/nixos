@@ -371,7 +371,12 @@
         '')
 
         devenv
-	claude-code
+	    claude-code
+
+        (pkgs.runCommand "rd" {} ''
+          mkdir -p $out/bin
+          ln -s /home/user/dox/projects/dictionary/dict-rust/target/release/dict-rust $out/bin/rd
+        '')
 
         # RDC/VNC Client
         kdePackages.krdc
