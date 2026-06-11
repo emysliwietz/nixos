@@ -537,7 +537,18 @@
         languagePacks = [
           "en"
           "de"
+          "tg"
+          "nl"
+          "la"
         ];
+
+        policies = {
+          HardwareAcceleration = true;
+          DisableTelemetry = true;
+          DisableFirefoxStudies = true;
+          DontCheckDefaultBrowser = true;
+          DefaultDownloadDirectory = "${config.home.homeDirectory}/downloads";
+        };
 
         profiles.default = {
           id = 0;
