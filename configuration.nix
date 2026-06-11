@@ -319,7 +319,7 @@
         enable = true;
            theme = {
              package = pkgs.flat-remix-gtk;
-             name = "Flat-Remix-GTK-Brown-Darkest";
+             name = "Flat-Remix-GTK-Brown-Dark";
            };
 
         font = {
@@ -334,7 +334,7 @@
 
         iconTheme = {
           package = pkgs.flat-remix-icon-theme;
-          name = "Flat-Remix-Brown-Darkest";
+          name = "Flat-Remix-Green-Darkest";
         };
 
         gtk3.extraConfig = {
