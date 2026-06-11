@@ -315,6 +315,19 @@
         };
       };
 
+      gtk = {
+        enable = true;
+           theme = {
+             package = pkgs.flat-remix-gtk;
+             name = "Flat-Remix-GTK-Brown-Darkest";
+           };
+
+        iconTheme = {
+          package = pkgs.flat-remix-icon-theme;
+          name = "Flat-Remix-Brown-Darkest";
+        };
+      };
+
       programs.emacs = {
         enable = true;
         package = pkgs.emacs-pgtk;
