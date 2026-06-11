@@ -334,7 +334,7 @@
 
         iconTheme = {
           package = pkgs.flat-remix-icon-theme;
-          name = "Flat-Remix-Green-Darkest";
+          name = "Flat-Remix-GTK-Green-Darkest";
         };
 
         gtk3.extraConfig = {
