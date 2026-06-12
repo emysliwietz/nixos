@@ -35,9 +35,9 @@ in
       [ "video/mp4" "video/x-matroska" "video/quicktime" ]
       "sh -c 'for f in %F; do ffmpeg -i \"$f\" -c:v hevc_nvenc -c:a aac \"''${f%.*}.mp4\"; done'")
 
-    (mkServiceMenu "convert-image" "Convert Image Format"
-      [ "image/jpeg" "image/png" "image/webp" "image/tiff" ]
-      "sh -c 'for f in %F; do convert \"$f\" \"''${f%.*}.png\"; done'")
+    (mkServiceMenu "convert-video" "Convert Video (ffmpeg)"
+      [ "video/mp4" "video/x-matroska" "video/quicktime" ]
+      "sh -c 'for f in %F; do ffmpeg -i \"$f\" -c:v hevc_nvenc -c:a aac \"\${f%.*}.mp4\"; done'")
 
     (mkServiceMenu "remove-background" "Remove Background"
       [ "image/jpeg" "image/png" "image/webp" ]
@@ -66,6 +66,6 @@ in
 
     (mkServiceMenu "download-video" "Download Video (yt-dlp)"
       [ ]
-      "yt-dlp -o \"%(title)s.%(ext)s\" \"$(xclip -selection clipboard -o)\"")
+      "yt-dlp -o \"%(title)s.%(ext)s\" \"$(wl-paste)\"")
   ];
 }
