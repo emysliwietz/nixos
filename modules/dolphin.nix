@@ -25,7 +25,6 @@
     ghostscript
     imagemagick
     yt-dlp
-    libreoffice
     (python3.withPackages (ps: with ps; [ rembg ]))
   ];
 
