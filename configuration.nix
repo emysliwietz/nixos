@@ -9,6 +9,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./modules/firefox.nix
+    ./modules/shell.nix
   ];
 
   nix.settings.experimental-features = [
@@ -158,7 +159,6 @@
       "networkmanager"
       "wheel"
     ];
-    shell = pkgs.zsh;
     packages = with pkgs; [
       teams-for-linux
       qbittorrent
@@ -171,39 +171,6 @@
   home-manager.users.user =
     { pkgs, ... }:
     {
-      programs.zsh = {
-        enable = true;
-
-        enableCompletion = true;
-        autosuggestion.enable = true;
-        syntaxHighlighting.enable = true;
-
-        history = {
-          size = 10000;
-          ignoreAllDups = true;
-        };
-
-        setOptions = [
-          "HIST_IGNORE_ALL_DUPS"
-          "AUTO_CD"
-        ];
-
-        shellAliases = {
-          rebuild = "sudo git -C /etc/nixos add . && sudo git -C /etc/nixos commit -m \"$(date '+%F %T')\" && sudo git -C /etc/nixos push || true && sudo nixos-rebuild switch --flake /etc/nixos";
-          nix-clean = "sudo nix-collect-garbage --delete-older-than 14d && sudo nix-store --gc && sudo nix-store --optimise";
-          vim = "nvim";
-          sudo = "sudo ";
-          ".." = "cd ..";
-          "..." = "cd ../..";
-          "...." = "cd ../../..";
-        };
-
-        initContent = ''
-          take() {
-              mkdir -p "$1" && cd "$1"
-          }
-        '';
-      };
 
       programs.direnv = {
         enable = true;
@@ -596,8 +563,6 @@
 
     };
 
-  # Install firefox.
-  programs.zsh.enable = true;
   programs.kdeconnect.enable = true;
 
 
