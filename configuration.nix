@@ -298,6 +298,27 @@
           exec ${caprine}/bin/caprine "$@"
         '')
 
+        (writeShellScriptBin "kjv" ''
+          exec /home/user/dox/projects/bible/bible --kjv "$@"
+        '')
+
+        (writeShellScriptBin "menge" ''
+          exec /home/user/dox/projects/bible/bible --menge "$@"
+        '')
+
+        (writeShellScriptBin "luther" ''
+          exec /home/user/dox/projects/bible/bible --luther "$@"
+        '')
+
+        (writeShellScriptBin "vul" ''
+          exec /home/user/dox/projects/bible/bible --vul "$@"
+        '')
+
+        (writeShellScriptBin "sxx" ''
+          exec /home/user/dox/projects/bible/bible --sxx "$@"
+        '')
+
+
         devenv
 
         (pkgs.runCommand "rd" {} ''
