@@ -1,6 +1,9 @@
 { config, pkgs, lib, ... }:
 
-let
+home-manager.users.user = {
+
+
+  let
   # Helper to create service menu entries
   mkServiceMenu = name: description: mimeTypes: exec: {
     ".local/share/kservices5/ServiceMenus/${name}.desktop".text = ''
@@ -17,8 +20,8 @@ let
     '';
   };
 
-in
-{
+  in
+  {
   # Required packages
   home.packages = with pkgs; [
     ffmpeg
@@ -68,4 +71,5 @@ in
       [ ]
       "yt-dlp -o \"%(title)s.%(ext)s\" \"$(wl-paste)\"")
   ];
+};
 }
