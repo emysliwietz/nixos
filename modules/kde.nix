@@ -20,5 +20,13 @@
     krdc
   ];
 
+  home-manager.users.user.home.programs.plasma = {
+    enable = true;
+
+    configFile.kdeglobals.General = {
+      TerminalApplication = "kitty";
+    };
+  };
+
   programs.kdeconnect.enable = true;
 }

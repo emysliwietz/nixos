@@ -3,7 +3,7 @@
   let
   # Helper to create service menu entries
   mkServiceMenu = name: description: mimeTypes: exec: {
-    ".local/share/kservices5/ServiceMenus/${name}.desktop".text = ''
+    ".local/share/kio/servicemenus/${name}.desktop".text = ''
       [Desktop Entry]
       Type=Service
       ServiceTypes=KonqPopupMenu/Plugin
