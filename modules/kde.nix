@@ -15,7 +15,7 @@
   ];
 
   # Add in non-default desired packages
-  home-manager.users.users.home.packages = with pkgs.kdePackages; [
+  home-manager.users.user.home.packages = with pkgs.kdePackages; [
     # RDC/VNC Client
     krdc
   ];
