@@ -1,8 +1,6 @@
 { config, pkgs, lib, ... }:
 
-home-manager.users.user = {
-
-
+home-manager.users.user {
   let
   # Helper to create service menu entries
   mkServiceMenu = name: description: mimeTypes: exec: {
