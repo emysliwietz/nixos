@@ -251,6 +251,16 @@
         };
       };
 
+      qt = {
+        enable = true;
+        platformTheme = "kde";
+        style = {
+          name = "Flat-Remix-KDE";
+          package = pkgs.flat-remix-kde;
+        };
+      };
+
+
       programs.git = {
         enable = true;
         settings.user = {
