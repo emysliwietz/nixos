@@ -299,7 +299,8 @@
 	      pandas
 	      requests
 	      numpy
-	      snowballstemmer
+	      snowballstemmer # requirement for emacs minor-mode
+          rembg # requirement for dolphin script
 	    ]))
 
         signal-desktop
