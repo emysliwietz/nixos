@@ -226,21 +226,11 @@
         style.name = "kvantum";
       };
 
-      xdg.configFile = {
-        # select the theme
-        "Kvantum/kvantum.kvconfig".text = ''
-        [General]
-        theme=KvArcDark
-        '';
-        # make sure Kvantum can find it, regardless of search paths
-        "Kvantum/KvArcDark".source = "${pkgs.arc-kde-theme}/share/Kvantum/ArcDark";
-      };
-
       gtk = {
         enable = true;
         theme = {
-          package = pkgs.arc-theme;
-          name = "Arc-Dark";
+          package = pkgs.kdePackages.breeze-gtk;
+          name = "Breeze-Dark";
         };
 
         font = {
@@ -280,11 +270,7 @@
 
 
       home.packages = with pkgs; [
-        arc-theme
-        arc-icon-theme
-        arc-kde-theme
-        libsForQt5.qtstyleplugin-kvantum
-        kdePackages.qtstyleplugin-kvantum
+        kdePackages.breeze-gtk
 
         (writeShellScriptBin "mpv" ''
           exec nvidia-offload ${mpv}/bin/mpv "$@"
@@ -298,28 +284,8 @@
           exec ${caprine}/bin/caprine "$@"
         '')
 
-        (writeShellScriptBin "kjv" ''
-          exec /home/user/dox/projects/bible/bible --kjv "$@"
-        '')
-
-        (writeShellScriptBin "menge" ''
-          exec /home/user/dox/projects/bible/bible --menge "$@"
-        '')
-
-        (writeShellScriptBin "luther" ''
-          exec /home/user/dox/projects/bible/bible --luther "$@"
-        '')
-
-        (writeShellScriptBin "vul" ''
-          exec /home/user/dox/projects/bible/bible --vul "$@"
-        '')
-
-        (writeShellScriptBin "sxx" ''
-          exec /home/user/dox/projects/bible/bible --sxx "$@"
-        '')
-
-
         devenv
+	    claude-code
 
         (pkgs.runCommand "rd" {} ''
           mkdir -p $out/bin
