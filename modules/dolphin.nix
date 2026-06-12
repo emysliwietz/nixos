@@ -68,4 +68,4 @@
       [ ]
       "yt-dlp -o \"%(title)s.%(ext)s\" \"$(wl-paste)\"")
   ];
-};
+}
