@@ -299,7 +299,6 @@
         '')
 
         devenv
-	    claude-code
 
         (pkgs.runCommand "rd" {} ''
           mkdir -p $out/bin
