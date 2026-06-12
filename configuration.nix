@@ -169,32 +169,6 @@
 	    };
       };
 
-      home.file.".config/Thunar/uca.xml".text = ''
-        <?xml version="1.0" encoding="UTF-8"?>
-        <actions>
-          <action>
-            <icon>utilities-terminal</icon>
-            <name>Open Terminal Here</name>
-            <submenu></submenu>
-            <unique-id>1234567890123456-1</unique-id>
-            <command>xfce4-terminal --working-directory %f</command>
-            <description>Open terminal in this directory</description>
-            <patterns>*</patterns>
-            <directories/>
-          </action>
-
-          <action>
-            <icon>application-pdf</icon>
-            <name>PPTX to PDF</name>
-            <submenu></submenu>
-            <unique-id>1234567890123456-2</unique-id>
-            <command>bash -c 'libreoffice --headless --convert-to pdf "%f"'</command>
-            <description>Convert PPTX to PDF</description>
-            <patterns>*.pptx;*.PPTX</patterns>
-            <files/>
-          </action>
-        </actions>
-      '';
 
       programs.neovim = {
         enable = true;
@@ -426,12 +400,6 @@
     plugins = with pkgs.obs-studio-plugins; [
     ];
   };
-  programs.thunar.enable = true;
-  programs.thunar.plugins = with pkgs.xfce; [
-    thunar-archive-plugin
-    thunar-volman
-  ];
-  programs.xfconf.enable = true; # needed to keep thunar config changes without xfce
 
   programs.hyprland.enable = true;
 
@@ -466,8 +434,6 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  services.tumbler.enable = true; # Thumbnails in thunar
-  services.gvfs.enable = true; # Mount, trash in thunar
 
   services.syncthing = {
     enable = true;
