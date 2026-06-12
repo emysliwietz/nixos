@@ -221,11 +221,26 @@
         };
       };
 
+      qt = {
+        enable = true;
+        style.name = "kvantum";
+      };
+
+      xdg.configFile = {
+        # select the theme
+        "Kvantum/kvantum.kvconfig".text = ''
+        [General]
+        theme=KvArcDark
+        '';
+        # make sure Kvantum can find it, regardless of search paths
+        "Kvantum/KvArcDark".source = "${pkgs.arc-kde-theme}/share/Kvantum/ArcDark";
+      };
+
       gtk = {
         enable = true;
         theme = {
-          package = pkgs.flat-remix-gtk;
-          name = "Flat-Remix-GTK-Green-Dark";
+          package = pkgs.arc-theme;
+          name = "Arc-Dark";
         };
 
         font = {
@@ -265,6 +280,12 @@
 
 
       home.packages = with pkgs; [
+        arc-theme
+        arc-icon-theme
+        arc-kde-theme
+        libsForQt5.qtstyleplugin-kvantum
+        kdePackages.qtstyleplugin-kvantum
+
         (writeShellScriptBin "mpv" ''
           exec nvidia-offload ${mpv}/bin/mpv "$@"
         '')
