@@ -10,6 +10,10 @@
     ./hardware-configuration.nix
     ./modules/firefox.nix
     ./modules/shell.nix
+    ./modules/nvidia.nix
+    ./modules/kde.nix
+    ./modules/emacs.nix
+    ./modules/thunar.nix
   ];
 
   nix.settings.experimental-features = [
@@ -68,54 +72,13 @@
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
 
   services.qbittorrent = {
     enable = true;
     openFirewall = true;
   };
 
-  # Tell Xorg/Wayland to use the nvidia driver
-  services.xserver.videoDrivers = [ "nvidia" ];
 
-  hardware.nvidia = {
-    # Required for Wayland
-    modesetting.enable = true;
-
-    # Power management — lets dGPU fully power off when idle
-    powerManagement.enable = true;
-    powerManagement.finegrained = true; # requires offload mode (set below)
-
-    # Quadro P500 is Pascal — open modules require Turing+, so keep this false
-    open = false;
-
-    # Enables the nvidia-settings GUI
-    nvidiaSettings = true;
-
-    prime = {
-      offload = {
-        enable = true;
-        enableOffloadCmd = true; # adds `nvidia-offload` helper command
-      };
-
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:2:0:0";
-    };
-  };
-
-  # Enables D-Bus service that KDE Plasma uses for per-app GPU selection
-  services.switcherooControl.enable = true;
-
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    konsole
-    kate
-    discover
-    dolphin
-    elisa
-    okular
-  ];
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -200,10 +163,10 @@
           enable_audio_bell = 0;
           # background_blur = 5;
         };
-	font = {
+	    font = {
           name = "SauceCodePro Nerd Font";
-	  size = 11;
-	};
+	      size = 11;
+	    };
       };
 
       home.file.".config/Thunar/uca.xml".text = ''
@@ -285,10 +248,10 @@
 
       gtk = {
         enable = true;
-           theme = {
-             package = pkgs.flat-remix-gtk;
-             name = "Flat-Remix-GTK-Green-Dark";
-           };
+        theme = {
+          package = pkgs.flat-remix-gtk;
+          name = "Flat-Remix-GTK-Green-Dark";
+        };
 
         font = {
           name = "SauceCodePro Semibold";
@@ -314,25 +277,6 @@
         };
       };
 
-      programs.emacs = {
-        enable = true;
-        package = pkgs.emacs-pgtk;
-        extraPackages = epkgs: [
-          (epkgs.treesit-grammars.with-grammars (
-            grammars: with grammars; [
-              tree-sitter-nix
-              tree-sitter-python
-              tree-sitter-bash
-              tree-sitter-rust
-              tree-sitter-markdown
-              tree-sitter-markdown-inline
-              tree-sitter-javascript
-              tree-sitter-jsdoc
-            ]
-          ))
-        ];
-      };
-
       programs.git = {
         enable = true;
         settings.user = {
@@ -344,9 +288,6 @@
         };
       };
 
-      home.sessionPath = [
-        "$HOME/.config/emacs/bin"
-      ];
 
       home.packages = with pkgs; [
         (writeShellScriptBin "mpv" ''
@@ -361,14 +302,6 @@
           exec ${caprine}/bin/caprine "$@"
         '')
 
-        (writeShellScriptBin "e" ''
-          if [ -t 0 ]; then
-            exec emacsclient -nw -a "" "$@"
-          else
-            exec emacsclient -c -a "" "$@"
-          fi
-        '')
-
         devenv
 	    claude-code
 
@@ -377,98 +310,22 @@
           ln -s /home/user/dox/projects/dictionary/dict-rust/target/release/dict-rust $out/bin/rd
         '')
 
-        # RDC/VNC Client
-        kdePackages.krdc
-        # zoom
-        zoom-us
-
-        # nix lsp for emacs
-        nixd
-
         # facebook messenger
         caprine
 
-        # :checkers spell
-        aspell
-        aspellDicts.en
-
-        ripgrep
-        fd
-
         nerd-fonts.jetbrains-mono
         nerd-fonts.symbols-only
-	nerd-fonts.sauce-code-pro
+	    nerd-fonts.sauce-code-pro
         symbola
 
-        cmake
-        gnumake
-
-        gore
-        jdk
-        pandoc
-        pipenv
-        python3Packages.nose2
-        poetry
-
-        isync
-        mu
-
         sqlite
 
-        # :tools direnv
-        direnv
-
-        # :tools lookup
-        sqlite
-
-        # :tools lsp
-        nodejs
-
-        # :lang cc
-        clang-tools # provides clang-format
-
-        # :lang nix
-        nixfmt-rfc-style
-
-        # :lang org
-        graphviz # provides dot
-        gnuplot
-        maim # screenshots
-
-        # :lang sh
-        shfmt
-        shellcheck
-
-        # :lang markdown
-        grip
-
-        # :lang python
         (python3.withPackages (python-pkgs: with python-pkgs; [
-	  pandas
-	  requests
-	  numpy
-	  snowballstemmer
-	]))
-        black
-        python3Packages.pyflakes
-        python3Packages.isort
-        python3Packages.pytest
-
-        # :lang rust
-        rust-analyzer
-        cargo
-        rustc
-
-        # :lang go
-        gopls
-        gomodifytags
-        gotests
-
-        # :tools docker
-        dockfmt
-
-        # :app rss
-        yt-dlp
+	      pandas
+	      requests
+	      numpy
+	      snowballstemmer
+	    ]))
 
         signal-desktop
 
@@ -562,9 +419,6 @@
       home.stateVersion = "25.11"; # Please read the comment before changing.
 
     };
-
-  programs.kdeconnect.enable = true;
-
 
   programs.obs-studio = {
     enable = true;

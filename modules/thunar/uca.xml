@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+
+  <!-- ===================== -->
+  <!-- TERMINAL -->
+  <!-- ===================== -->
+
+  <action>
+    <icon>utilities-terminal</icon>
+    <name>Open Kitty Here</name>
+    <submenu></submenu>
+    <unique-id>1000</unique-id>
+    <command>kitty --directory="%f"</command>
+    <patterns>*</patterns>
+    <directories/>
+  </action>
+
+  <!-- ===================== -->
+  <!-- DOCUMENTS -->
+  <!-- ===================== -->
+
+  <action>
+    <icon>application-pdf</icon>
+    <name>Convert → PDF</name>
+    <submenu>Convert/Documents</submenu>
+    <unique-id>2001</unique-id>
+    <command>bash -c 'for f in %F; do libreoffice --headless --convert-to pdf "$f" --outdir "$(dirname "$f")"; done'</command>
+    <patterns>*.doc;*.docx;*.ppt;*.pptx;*.xls;*.xlsx;*.odt;*.odp;*.ods</patterns>
+    <files/>
+  </action>
+
+  <action>
+    <icon>text-x-generic</icon>
+    <name>Markdown → PDF</name>
+    <submenu>Convert/Documents</submenu>
+    <unique-id>2002</unique-id>
+    <command>bash -c 'for f in %F; do base="${f%.*}"; out="$base.pdf"; i=1; while [ -e "$out" ]; do out="$base ($i).pdf"; i=$((i+1)); done; pandoc "$f" -o "$out"; done'</command>
+    <patterns>*.md;*.markdown</patterns>
+    <files/>
+  </action>
+
+  <action>
+    <icon>application-pdf</icon>
+    <name>PDF → PNG</name>
+    <submenu>Convert/Documents</submenu>
+    <unique-id>2003</unique-id>
+    <command>bash -c 'for f in %F; do pdftoppm -png "$f" "${f%.*}"; done'</command>
+    <patterns>*.pdf</patterns>
+    <files/>
+  </action>
+
+  <!-- ===================== -->
+  <!-- IMAGES -->
+  <!-- ===================== -->
+
+  <action>
+    <icon>image-x-generic</icon>
+    <name>PNG → JPG</name>
+    <submenu>Convert/Images</submenu>
+    <unique-id>2101</unique-id>
+    <command>bash -c 'for f in %F; do base="${f%.*}"; out="$base.jpg"; i=1; while [ -e "$out" ]; do out="$base ($i).jpg"; i=$((i+1)); done; magick "$f" "$out"; done'</command>
+    <patterns>*.png</patterns>
+    <files/>
+  </action>
+
+  <action>
+    <icon>image-x-generic</icon>
+    <name>JPG → PNG</name>
+    <submenu>Convert/Images</submenu>
+    <unique-id>2102</unique-id>
+    <command>bash -c 'for f in %F; do magick "$f" "${f%.*}.png"; done'</command>
+    <patterns>*.jpg;*.jpeg</patterns>
+    <files/>
+  </action>
+
+  <action>
+    <icon>image-x-generic</icon>
+    <name>Image → WEBP</name>
+    <submenu>Convert/Images</submenu>
+    <unique-id>2103</unique-id>
+    <command>bash -c 'for f in %F; do magick "$f" "${f%.*}.webp"; done'</command>
+    <patterns>*.png;*.jpg;*.jpeg</patterns>
+    <files/>
+  </action>
+
+  <action>
+    <icon>image-x-generic</icon>
+    <name>WEBP → PNG</name>
+    <submenu>Convert/Images</submenu>
+    <unique-id>2104</unique-id>
+    <command>bash -c 'for f in %F; do magick "$f" "${f%.*}.png"; done'</command>
+    <patterns>*.webp</patterns>
+    <files/>
+  </action>
+
+  <action>
+    <icon>image-x-generic</icon>
+    <name>Image → PDF</name>
+    <submenu>Convert/Images</submenu>
+    <unique-id>2105</unique-id>
+    <command>bash -c 'for f in %F; do magick "$f" "${f%.*}.pdf"; done'</command>
+    <patterns>*.png;*.jpg;*.jpeg;*.webp</patterns>
+    <files/>
+  </action>
+
+  <!-- ===================== -->
+  <!-- AUDIO -->
+  <!-- ===================== -->
+
+  <action>
+    <icon>audio-x-generic</icon>
+    <name>Audio → MP3</name>
+    <submenu>Convert/Audio</submenu>
+    <unique-id>2201</unique-id>
+    <command>bash -c 'for f in %F; do ffmpeg -y -i "$f" -vn -codec:a libmp3lame -q:a 2 "${f%.*}.mp3"; done'</command>
+    <patterns>*.wav;*.flac;*.ogg;*.m4a</patterns>
+    <files/>
+  </action>
+
+  <action>
+    <icon>audio-x-generic</icon>
+    <name>Audio → FLAC</name>
+    <submenu>Convert/Audio</submenu>
+    <unique-id>2202</unique-id>
+    <command>bash -c 'for f in %F; do ffmpeg -y -i "$f" "${f%.*}.flac"; done'</command>
+    <patterns>*.mp3;*.wav;*.ogg;*.m4a</patterns>
+    <files/>
+  </action>
+
+  <!-- ===================== -->
+  <!-- VIDEO -->
+  <!-- ===================== -->
+
+  <action>
+    <icon>video-x-generic</icon>
+    <name>Video → MP4</name>
+    <submenu>Convert/Video</submenu>
+    <unique-id>2301</unique-id>
+    <command>bash -c 'for f in %F; do ffmpeg -y -i "$f" -c:v libx264 -c:a aac "${f%.*}.mp4"; done'</command>
+    <patterns>*.mkv;*.webm;*.avi;*.mov</patterns>
+    <files/>
+  </action>
+
+  <action>
+    <icon>video-x-generic</icon>
+    <name>Video → WEBM</name>
+    <submenu>Convert/Video</submenu>
+    <unique-id>2302</unique-id>
+    <command>bash -c 'for f in %F; do ffmpeg -y -i "$f" -c:v libvpx-vp9 -c:a libopus "${f%.*}.webm"; done'</command>
+    <patterns>*.mp4;*.mkv;*.mov;*.avi</patterns>
+    <files/>
+  </action>
+
+</actions>
