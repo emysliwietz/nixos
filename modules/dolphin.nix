@@ -41,7 +41,7 @@ in
 
     (mkServiceMenu "remove-background" "Remove Background"
       [ "image/jpeg" "image/png" "image/webp" ]
-      "sh -c 'for f in %F; do python3 -m rembg i \"$f\" \"''${f%.*}-nobg.png\"; done'")
+      "sh -c 'for f in %F; do python3 -m rembg i \"$f\" \"\${f%.*}-nobg.png\"; done'")
 
     (mkServiceMenu "rotate-image" "Rotate Image 90°"
       [ "image/jpeg" "image/png" "image/webp" ]
