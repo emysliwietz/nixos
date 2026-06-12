@@ -1,6 +1,5 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
-# Declares conversion tools in dolphin context menu
 let
   # Helper to create service menu entries
   mkServiceMenu = name: description: mimeTypes: exec: {
