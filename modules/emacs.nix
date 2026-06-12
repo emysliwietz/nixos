@@ -10,7 +10,7 @@
       package = pkgs.emacs-pgtk;
 
       # Pre-install tree-sitter grammars
-      extrapackages = epkgs: [
+      extraPackages = epkgs: [
         (epkgs.treesit-grammars.with-grammars (
           grammars: with grammars; [
             tree-sitter-nix
