@@ -8,6 +8,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./modules/firefox.nix
   ];
 
   nix.settings.experimental-features = [
@@ -531,43 +532,6 @@
         X-GNOME-Autostart-enabled=true
       '';
 
-      programs.firefox = {
-        enable = true;
-        nativeMessagingHosts = [ pkgs.keepassxc ];
-        languagePacks = [
-          "en"
-          "de"
-          "tg"
-          "nl"
-          "la"
-        ];
-
-        policies = {
-          HardwareAcceleration = true;
-          DisableTelemetry = true;
-          DisableFirefoxStudies = true;
-          DontCheckDefaultBrowser = true;
-          DefaultDownloadDirectory = "/home/user/downloads";
-        };
-
-        profiles.default = {
-          id = 0;
-          isDefault = true;
-
-          search = {
-            default = "ddg";
-            force = true; # prevents Firefox from overriding it on updates
-          };
-
-          settings = {
-            # enable compact mode (hidden option since Firefox 89)
-            "browser.compactmode.show" = true;
-            "browser.uidensity" = 1;
-            "full-screen-api.ignore-widgets" = true;
-          };
-
-        };
-      };
 
       xdg.autostart.enable = true; # Enable creation of XDG autostart entries.
 
