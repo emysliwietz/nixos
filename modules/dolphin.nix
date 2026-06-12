@@ -1,6 +1,5 @@
 { config, pkgs, lib, ... }:
 
-home-manager.users.user {
   let
   # Helper to create service menu entries
   mkServiceMenu = name: description: mimeTypes: exec: {
@@ -21,7 +20,7 @@ home-manager.users.user {
   in
   {
   # Required packages
-  home.packages = with pkgs; [
+  home-manager.users.user.home.packages = with pkgs; [
     ffmpeg
     ghostscript
     imagemagick
@@ -31,7 +30,7 @@ home-manager.users.user {
   ];
 
   # Service menu files
-  home.file = lib.mkMerge [
+  home-manager.users.user.home.file = lib.mkMerge [
     (mkServiceMenu "convert-video" "Convert Video (GPU)"
       [ "video/mp4" "video/x-matroska" "video/quicktime" ]
       "sh -c 'for f in %F; do ffmpeg -i \"$f\" -c:v hevc_nvenc -c:a aac \"\${f%.*}.mp4\"; done'")
@@ -70,4 +69,3 @@ home-manager.users.user {
       "yt-dlp -o \"%(title)s.%(ext)s\" \"$(wl-paste)\"")
   ];
 };
-}
