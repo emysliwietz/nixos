@@ -14,6 +14,7 @@
     ./modules/kde.nix
     ./modules/emacs.nix
     ./modules/thunar.nix
+    ./modules/dolphin.nix
   ];
 
   nix.settings.experimental-features = [
