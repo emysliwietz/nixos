@@ -26,8 +26,13 @@
       ];
     };
 
-    # Shorthand that launches tui in terminal and gui as shortcut
+    # Add doom bin to path
+    home.sessionPath = [
+      "$HOME/.config/emacs/bin"
+    ];
+
     home.packages = with pkgs; [
+      # Shorthand that launches tui in terminal and gui as shortcut
       (writeShellScriptBin "e" ''
         if [ -t 0 ]; then
             exec emacsclient -nw -a "" "$@"
@@ -35,15 +40,9 @@
             exec emacsclient -c -a "" "$@"
           fi
       '')
-    ];
 
-    # Add doom bin to path
-    home.sessionPath = [
-      "$HOME/.config/emacs/bin"
-    ];
 
-    # Dependencies for doom modules
-    home.packages = with pkgs; [
+      # Dependencies for doom modules
       # general
       ripgrep
       fd
