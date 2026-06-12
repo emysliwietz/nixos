@@ -33,7 +33,7 @@ in
   home.file = lib.mkMerge [
     (mkServiceMenu "convert-video" "Convert Video (GPU)"
       [ "video/mp4" "video/x-matroska" "video/quicktime" ]
-      "sh -c 'for f in %F; do ffmpeg -i \"$f\" -c:v hevc_nvenc -c:a aac \"''${f%.*}.mp4\"; done'")
+      "sh -c 'for f in %F; do ffmpeg -i \"$f\" -c:v hevc_nvenc -c:a aac \"\${f%.*}.mp4\"; done'")
 
     (mkServiceMenu "convert-video" "Convert Video (ffmpeg)"
       [ "video/mp4" "video/x-matroska" "video/quicktime" ]
