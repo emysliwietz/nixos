@@ -221,11 +221,6 @@
         };
       };
 
-      qt = {
-        enable = true;
-        style.name = "kvantum";
-      };
-
       gtk = {
         enable = true;
         theme = {
