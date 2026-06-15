@@ -8,6 +8,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./boot.nix
     ./modules/firefox.nix
     ./modules/shell.nix
     ./modules/nvidia.nix
@@ -15,6 +16,8 @@
     ./modules/emacs.nix
     ./modules/thunar.nix
     ./modules/dolphin.nix
+    ./modules/theme.nix
+    ./modules/keepassxc.nix
   ];
 
   nix.settings.experimental-features = [
@@ -27,6 +30,7 @@
     "user"
   ];
 
+  
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -109,8 +113,6 @@
     #media-session.enable = true;
   };
 
-  security.pam.services.sddm.kwallet.enable = true;
-  security.pam.services.kscreenlocker.kwallet.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -221,36 +223,7 @@
         };
       };
 
-      gtk = {
-        enable = true;
-        theme = {
-          package = pkgs.kdePackages.breeze-gtk;
-          name = "Breeze-Dark";
-        };
 
-        font = {
-          name = "SauceCodePro Semibold";
-          size = 10;
-        };
-
-        cursorTheme = {
-          name = "breeze_cursors";
-          size = 24;
-        };
-
-        iconTheme = {
-          package = pkgs.flat-remix-icon-theme;
-          name = "Flat-Remix-Green-Dark";
-        };
-
-        gtk3.extraConfig = {
-          gtk-application-prefer-dark-theme = true;
-        };
-
-        gtk4.extraConfig = {
-          gtk-application-prefer-dark-theme = true;
-        };
-      };
 
       programs.git = {
         enable = true;
@@ -263,41 +236,18 @@
         };
       };
 
-  # Utility function to install a package with an arbitrary name
-  # In environment.systemPackages, just put i.e. (renamePackage pkgs.caprine "caprine" "facebook-messenger")
-   renamePackage = pkg: oldName: newName:
-    pkgs.runCommand newName {
-      nativeBuildInputs = [ pkgs.makeWrapper ];
-    } ''
-      mkdir -p $out/bin $out/share
-
-      makeWrapper ${pkg}/bin/${oldName} $out/bin/${newName}
-
-      if [ -d ${pkg}/share/applications ]; then
-        cp -r ${pkg}/share/applications $out/share/applications
-        chmod -R +w $out/share/applications
-        substituteInPlace $out/share/applications/*.desktop \
-          --replace-fail "Exec=${oldName}" "Exec=${newName}"
-      fi
-
-      for dir in ${pkg}/share/*; do
-        name=$(basename "$dir")
-        [ "$name" = "applications" ] && continue
-        ln -s "$dir" "$out/share/$name"
-      done
-    '';
-
-
 
       home.packages = with pkgs; [
-        kdePackages.breeze-gtk
-
         (writeShellScriptBin "mpv" ''
           exec nvidia-offload ${mpv}/bin/mpv "$@"
         '')
 
         (writeShellScriptBin "mpv-cpu" ''
           exec ${mpv}/bin/mpv "$@"
+        '')
+
+        (writeShellScriptBin "facebook-messenger" ''
+          exec ${caprine}/bin/caprine "$@"
         '')
 
         devenv
@@ -309,12 +259,8 @@
         '')
 
         # facebook messenger
-        (renamePackage caprine "caprine" "facebook-messenger")
+        caprine
 
-        nerd-fonts.jetbrains-mono
-        nerd-fonts.symbols-only
-	    nerd-fonts.sauce-code-pro
-        symbola
 
         sqlite
 
@@ -357,58 +303,6 @@
 
       xdg.autostart.enable = true; # Enable creation of XDG autostart entries.
 
-      programs.keepassxc = {
-        enable = true;
-        autostart = true;
-        settings = {
-          General.ConfigVersion = 2;
-
-          Browser.Enabled = true;
-
-          FdoSecrets = {
-            Enabled = true; # Enable Secret Service Integration
-            ShowNotification = false;
-          };
-
-          GUI = {
-            ShowTrayIcon = true;
-            TrayIconAppearance = "monochrome-light";
-            MinimizeOnStartup = true;
-            MinimizeToTray = true;
-            MinimizeOnClose = true;
-            ApplicationTheme = "dark";
-          };
-
-          Security.IconDownloadFallback = true; # DuckDuckGo fallback for favicons
-        };
-      };
-
-      # Disable KWallet's own secret service so KeePassXC can take over
-      xdg.configFile."kwalletrc".text = ''
-        [Wallet]
-        Enabled=true
-        First Use=false
-
-        [org.freedesktop.secrets]
-        apiEnabled=false
-      '';
-
-      # KeePassXC config: enable secret service + auto-open + lock on sleep
-      xdg.configFile."keepassxc/keepassxc.ini".text = ''
-        [FdoSecrets]
-        Enabled=true
-
-        [General]
-        AutoSaveAfterEveryChange=true
-        AutoTypeDelay=25
-        MinimizeAfterUnlock=true
-        RememberLastKeyFiles=true
-
-        [Security]
-        LockDatabaseIdle=true
-        LockDatabaseIdleSeconds=600
-        LockDatabaseScreenLock=true
-      '';
 
       #
       # You should not change this value, even if you update Home Manager. If you do
