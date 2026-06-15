@@ -8,7 +8,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./boot.nix
+    ./modules/boot.nix
     ./modules/firefox.nix
     ./modules/shell.nix
     ./modules/nvidia.nix
@@ -32,18 +32,6 @@
 
   
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  boot.loader.systemd-boot.configurationLimit = 30;
-
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  boot.kernelModules = [
-    "snd-aloop"
-  ];
 
   networking.hostName = "astaroth"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
