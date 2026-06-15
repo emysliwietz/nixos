@@ -278,7 +278,6 @@
 
       programs.bash.enable = true;
 
-      fonts.fontconfig.enable = true;
 
       xdg.configFile."autostart/signal-desktop.desktop".text = ''
         [Desktop Entry]
