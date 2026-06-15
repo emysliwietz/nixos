@@ -11,7 +11,7 @@
 
   outputs = { nixpkgs, home-manager, claude-code, ... }: {
     nixosConfigurations.astaroth = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+      stdenv.hostPlatform.system = "x86_64-linux";
       modules = [
         ./configuration.nix
 	    ./packages/iriunwebcam/iriunwebcam-module.nix
