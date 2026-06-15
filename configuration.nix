@@ -27,29 +27,6 @@
     "user"
   ];
 
-  # Utility function to install a package with an arbitrary name
-  # In environment.systemPackages, just put i.e. (renamePackage pkgs.caprine "caprine" "facebook-messenger")
-   renamePackage = pkg: oldName: newName:
-    pkgs.runCommand newName {
-      nativeBuildInputs = [ pkgs.makeWrapper ];
-    } ''
-      mkdir -p $out/bin $out/share
-
-      makeWrapper ${pkg}/bin/${oldName} $out/bin/${newName}
-
-      if [ -d ${pkg}/share/applications ]; then
-        cp -r ${pkg}/share/applications $out/share/applications
-        chmod -R +w $out/share/applications
-        substituteInPlace $out/share/applications/*.desktop \
-          --replace-fail "Exec=${oldName}" "Exec=${newName}"
-      fi
-
-      for dir in ${pkg}/share/*; do
-        name=$(basename "$dir")
-        [ "$name" = "applications" ] && continue
-        ln -s "$dir" "$out/share/$name"
-      done
-    '';
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -285,6 +262,31 @@
           credential.helper = "store"; # caches in ~/.git-credentials
         };
       };
+
+  # Utility function to install a package with an arbitrary name
+  # In environment.systemPackages, just put i.e. (renamePackage pkgs.caprine "caprine" "facebook-messenger")
+   renamePackage = pkg: oldName: newName:
+    pkgs.runCommand newName {
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+    } ''
+      mkdir -p $out/bin $out/share
+
+      makeWrapper ${pkg}/bin/${oldName} $out/bin/${newName}
+
+      if [ -d ${pkg}/share/applications ]; then
+        cp -r ${pkg}/share/applications $out/share/applications
+        chmod -R +w $out/share/applications
+        substituteInPlace $out/share/applications/*.desktop \
+          --replace-fail "Exec=${oldName}" "Exec=${newName}"
+      fi
+
+      for dir in ${pkg}/share/*; do
+        name=$(basename "$dir")
+        [ "$name" = "applications" ] && continue
+        ln -s "$dir" "$out/share/$name"
+      done
+    '';
+
 
 
       home.packages = with pkgs; [
