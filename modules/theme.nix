@@ -2,6 +2,9 @@
 
 {
 home-manager.users.user = {
+
+      fonts.fontconfig.enable = true;
+
        gtk = {
         enable = true;
         theme = {
@@ -32,5 +35,15 @@ home-manager.users.user = {
           gtk-application-prefer-dark-theme = true;
         };
       };
+
+      home.packages = with pkgs; [
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.symbols-only
+	    nerd-fonts.sauce-code-pro
+        symbola
+
+];
 };
+
+
 }
