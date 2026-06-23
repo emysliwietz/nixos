@@ -75,7 +75,6 @@
         LockOnResume=false
       '';
       force = true;
-    }
-
+    };
   };
 }
