@@ -283,7 +283,7 @@
         [Desktop Entry]
         Type=Application
         Name=Signal
-        Exec=${pkgs.signal-desktop}/bin/signal-desktop --start-in-tray --no-sandbox
+        Exec=${pkgs.signal-desktop}/bin/signal-desktop --start-in-tray --no-sandbox --password-store=gnome-libsecret
         X-GNOME-Autostart-enabled=true
       '';
 

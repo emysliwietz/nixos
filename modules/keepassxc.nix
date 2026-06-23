@@ -2,8 +2,9 @@
 
 {
 
-  security.pam.services.sddm.kwallet.enable = true;
-  security.pam.services.kscreenlocker.kwallet.enable = true;
+  # Disable kwallet (assuming Plasma)
+  security.pam.services.sddm.kwallet.enable = false;
+  security.pam.services.kscreenlocker.kwallet.enable = false;
 
   home-manager.users.user = {
     programs.keepassxc = {
@@ -45,18 +46,26 @@
     # KeePassXC config: enable secret service + auto-open + lock on sleep
     xdg.configFile."keepassxc/keepassxc.ini".text = ''
       [FdoSecrets]
-        Enabled=true
+      Enabled=true
 
-        [General]
-        AutoSaveAfterEveryChange=true
-        AutoTypeDelay=25
-        MinimizeAfterUnlock=true
-        RememberLastKeyFiles=true
+      [General]
+      AutoSaveAfterEveryChange=true
+      AutoTypeDelay=25
+      MinimizeAfterUnlock=true
+      RememberLastKeyFiles=true
 
-        [Security]
-        LockDatabaseIdle=true
-        LockDatabaseIdleSeconds=600
-        LockDatabaseScreenLock=true
+      [Security]
+      LockDatabaseIdle=false
+      LockDatabaseScreenLock=true
+      LockDatabaseSleep=false
+      EnableQuickUnlock=true
+    '';
+
+    # KDE: do not lock screen on resume from suspend (lid open)
+    # Screen only locks on explicit lock or idle timeout
+    xdg.configFile."kscreenlockerrc".text = lib.mkForce ''
+      [Daemon]
+      LockOnResume=false
     '';
   };
 }
