@@ -43,6 +43,7 @@
         apiEnabled=false
     '';
 
+
     # KeePassXC config: enable secret service + auto-open + lock on sleep
     xdg.configFile."keepassxc/keepassxc.ini".text = ''
       [FdoSecrets]
@@ -63,9 +64,18 @@
 
     # KDE: do not lock screen on resume from suspend (lid open)
     # Screen only locks on explicit lock or idle timeout
-    xdg.configFile."kscreenlockerrc".text = lib.mkForce ''
-      [Daemon]
-      LockOnResume=false
-    '';
+
+    xdg.configFile."kscreenlockerrc" = {
+      text = lib.mkForce ''
+        [Greeter][Wallpaper][org.kde.image][General]
+        Image=file:///nix/store/1n95gvf26ipr5d6vavyjzam7879h8qps-plasma-workspace-wallpapers-6.5.6/share/wallpapers/Path/
+        PreviewImage=file:///nix/store/1n95gvf26ipr5d6vavyjzam7879h8qps-plasma-workspace-wallpapers-6.5.6/share/wallpapers/Path/
+        SlidePaths=/nix/store/0c1311gy20x5sshmh7dkppxhsx3czwkj-breeze-6.5.6/share/wallpapers/,/run/current-system/sw/share/wallpapers/
+        [Daemon]
+        LockOnResume=false
+      '';
+      force = true;
+    }
+
   };
 }

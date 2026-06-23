@@ -5,6 +5,8 @@ home-manager.users.user = {
 
       fonts.fontconfig.enable = true;
 
+      xdg.configFile.".gtkrc-2.0".force = tru
+
        gtk = {
         enable = true;
         theme = {
