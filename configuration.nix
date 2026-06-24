@@ -183,6 +183,7 @@
         enable = true;
       };
 
+      sessionVariables._ZO_DOCTOR = false;
       programs.zoxide = {
         enable = true;
         enableZshIntegration = true;
