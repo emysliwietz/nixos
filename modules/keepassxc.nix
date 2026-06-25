@@ -11,7 +11,13 @@
       enable = true;
       autostart = true;
       settings = {
-        General.ConfigVersion = 2;
+        General = {
+          ConfigVersion = 2;
+          AutoSaveAfterEveryChange = true;
+          AutoTypeDelay = 25;
+          MinimizeAfterUnlock = true;
+          RememberLastKeyFiles = true;
+        };
 
         Browser.Enabled = true;
 
@@ -29,7 +35,13 @@
           ApplicationTheme = "dark";
         };
 
-        Security.IconDownloadFallback = true; # DuckDuckGo fallback for favicons
+        Security = {
+          IconDownloadFallback = true; # DuckDuckGo fallback for favicons
+          LockDatabaseIdle = false;
+          LockDatabaseScreenLock = true;
+          LockDatabaseSleep = false;
+          EnableQuickUnlock = true;
+        };
       };
     };
 
@@ -43,24 +55,6 @@
         apiEnabled=false
     '';
 
-
-    # KeePassXC config: enable secret service + auto-open + lock on sleep
-    xdg.configFile."keepassxc/keepassxc.ini".text = ''
-      [FdoSecrets]
-      Enabled=true
-
-      [General]
-      AutoSaveAfterEveryChange=true
-      AutoTypeDelay=25
-      MinimizeAfterUnlock=true
-      RememberLastKeyFiles=true
-
-      [Security]
-      LockDatabaseIdle=false
-      LockDatabaseScreenLock=true
-      LockDatabaseSleep=false
-      EnableQuickUnlock=true
-    '';
 
     # KDE: do not lock screen on resume from suspend (lid open)
     # Screen only locks on explicit lock or idle timeout
