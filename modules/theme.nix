@@ -8,7 +8,6 @@ home-manager.users.user = {
       # home.file.".gtkrc-2.0".force = lib.mkForce true;
 
        gtk = {
-        force = true;
         enable = true;
         theme = {
           package = pkgs.kdePackages.breeze-gtk;

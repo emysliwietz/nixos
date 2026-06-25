@@ -121,6 +121,7 @@
 
   home-manager.useGlobalPkgs = true; # uses system pkgs, avoids a second nixpkgs eval
   home-manager.useUserPackages = true; # installs packages to /etc/profiles/per-user/...
+  home-manager.backupFileExtension = "hm-backup";
 
   home-manager.users.user =
     { pkgs, ... }:
