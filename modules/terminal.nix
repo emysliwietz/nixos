@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  home-manger-users.user = {
+  home-manger.users.user = {
 
     programs.bash.enable = true;
 
