@@ -8,17 +8,13 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./modules/boot.nix
-    ./modules/firefox.nix
-    ./modules/shell.nix
-    ./modules/nvidia.nix
-    ./modules/kde.nix
-    ./modules/emacs.nix
-    ./modules/thunar.nix
-    ./modules/dolphin.nix
-    ./modules/theme.nix
-    ./modules/keepassxc.nix
-  ];
+  ] ++ (
+    # Auto-import every .nix file under ./modules/
+    let dir = ./modules; in
+    map (f: dir + "/${f}")
+      (builtins.filter (f: builtins.match ".*\\.nix" f != null)
+        (builtins.attrNames (builtins.readDir dir)))
+  );
 
   nix.settings.experimental-features = [
     "nix-command"
@@ -30,9 +26,6 @@
     "user"
   ];
 
-  
-
-
   networking.hostName = "astaroth"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -43,23 +36,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
-  time.timeZone = "Europe/Berlin";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "de_DE.UTF-8";
-    LC_IDENTIFICATION = "de_DE.UTF-8";
-    LC_MEASUREMENT = "de_DE.UTF-8";
-    LC_MONETARY = "de_DE.UTF-8";
-    LC_NAME = "de_DE.UTF-8";
-    LC_NUMERIC = "de_DE.UTF-8";
-    LC_PAPER = "de_DE.UTF-8";
-    LC_TELEPHONE = "de_DE.UTF-8";
-    LC_TIME = "de_DE.UTF-8";
-  };
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
@@ -73,14 +49,6 @@
 
 
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "de";
-    variant = "";
-  };
-
-  # Configure console keymap
-  console.keyMap = "de";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -126,107 +94,6 @@
   home-manager.users.user =
     { pkgs, ... }:
     {
-
-      programs.direnv = {
-        enable = true;
-        enableZshIntegration = true;
-      };
-
-      programs.kitty = {
-        enable = true;
-        enableGitIntegration = true;
-        shellIntegration.enableZshIntegration = true;
-        keybindings = {
-          "super+q" = "quit";
-          "cmd+c" = "copy_to_clipboard";
-          "cmd+v" = "paste_from_clipboard";
-          "alt+c" = "copy_to_clipboard";
-          "alt+v" = "paste_from_clipboard";
-          "alt+ctrl+plus" = "change_font_size all +2.0";
-          "alt+ctrl+minus" = "change_font_size all -2.0";
-          "ctrl+kp_add" = "change_font_size all +2.0";
-          "ctrl+kp_subtract" = "change_font_size all -2.0";
-        };
-        settings = {
-          confirm_os_window_close = 0;
-          copy_on_select = "yes";
-          dynamic_background_opacity = 1;
-          background_opacity = 0.8;
-          enable_audio_bell = 0;
-          # background_blur = 5;
-        };
-	    font = {
-          name = "SauceCodePro Nerd Font";
-	      size = 11;
-	    };
-      };
-
-
-      programs.neovim = {
-        enable = true;
-        defaultEditor = false;
-        viAlias = true;
-        vimAlias = true;
-        extraLuaConfig = ''
-          vim.opt.number = true
-          vim.opt.relativenumber = true
-          vim.opt.clipboard = "unnamedplus"
-        '';
-      };
-
-      programs.fzf = {
-        enable = true;
-        enableZshIntegration = true;
-      };
-
-      # Shell Prompt
-      programs.starship = {
-        enable = true;
-      };
-
-      home.sessionVariables._ZO_DOCTOR = "0";
-      programs.zoxide = {
-        enable = true;
-        enableZshIntegration = true;
-
-        options = [
-          "--cmd cd"
-        ];
-      };
-
-      programs.zathura = {
-        enable = true;
-        mappings = {
-          i = "recolor";
-          n = "navigate next";
-          p = "navigate previous";
-        };
-        options = {
-          selection-clipboard = "clipboard";
-          recolor-keephue = "true";
-          recolor = "true";
-          guioptions = "";
-          window-title-home-tilde = "true";
-          statusbar-basename = "true";
-          adjust-open = "best-fit";
-          scroll-page-aware = "true";
-        };
-      };
-
-
-
-      programs.git = {
-        enable = true;
-        settings.user = {
-          name = "Egidius";
-          email = "git@sermak.xyz";
-        };
-        settings = {
-          credential.helper = "store"; # caches in ~/.git-credentials
-        };
-      };
-
-
       home.packages = with pkgs; [
         (writeShellScriptBin "mpv" ''
           exec nvidia-offload ${mpv}/bin/mpv "$@"
@@ -277,8 +144,6 @@
           show_program_path = 1;
         };
       };
-
-      programs.bash.enable = true;
 
 
       xdg.configFile."autostart/signal-desktop.desktop".text = ''
@@ -381,13 +246,6 @@
     };
   };
 
-  environment.etc."gitconfig".text = ''
-    [user]
-      name = "Egidius"
-      email = "git@sermak.xyz"
-    [credential]
-      helper = store
-  '';
 
   # List of hardware to enable
   hardware.bluetooth.enable = true;
