@@ -5,7 +5,7 @@ home-manager.users.user = {
 
       fonts.fontconfig.enable = true;
 
-      home.file.".gtkrc-2.0".force = lib.mkForce true;
+      # home.file.".gtkrc-2.0".force = lib.mkForce true;
 
        gtk = {
         enable = true;
