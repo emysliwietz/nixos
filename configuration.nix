@@ -107,6 +107,8 @@
           exec ${caprine}/bin/caprine "$@"
         '')
 
+	jellyfin-media-player
+
         devenv
 	    claude-code
 
