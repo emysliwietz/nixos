@@ -250,6 +250,7 @@ in {
           "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
           "swayosd-server"
           "swww-daemon --format xrgb"
+          ''bash -c 'sleep 2; while true; do swww img "$(find /home/user/dox/wallpapers -type f | shuf -n1)" --transition-type grow --transition-duration 1.5 --transition-fps 60; sleep 900; done' ''
           "nm-applet --indicator"
           "swaync"
           "ags"
@@ -1186,262 +1187,259 @@ in {
       settings.mainBar = {
         layer = "top";
         position = "top";
-        height = 34;
+        height = 26;
         spacing = 0;
-        margin-top = 4;
-        margin-left = 8;
-        margin-right = 8;
+        margin-top = 3;
+        margin-left = 6;
+        margin-right = 6;
 
         modules-left = [
           "hyprland/workspaces"
-          "custom/sep-left"
+          "custom/arrow-ws-end"
           "hyprland/window"
         ];
-        modules-center = [ "clock" ];
+        modules-center = [
+          "custom/arrow-clock-l"
+          "clock"
+          "custom/arrow-clock-r"
+        ];
         modules-right = [
           "tray"
-          "custom/sep-right"
+          "custom/arrow-r1"
           "pulseaudio"
-          "custom/sep-right"
+          "custom/arrow-r2"
           "network"
-          "custom/sep-right"
+          "custom/arrow-r3"
           "battery"
-          "custom/sep-right"
+          "custom/arrow-r4"
           "custom/power"
         ];
 
         "hyprland/workspaces" = {
           format = "{icon}";
           format-icons = {
-            "1" = "1";
-            "2" = "2";
-            "3" = "3";
-            "4" = "4";
-            "5" = "5";
-            "6" = "6";
-            "7" = "7";
-            "8" = "8";
-            "9" = "9";
-            "10" = "10";
-            urgent = "!";
-            default = " ";
+            "1" = "1"; "2" = "2"; "3" = "3"; "4" = "4"; "5" = "5";
+            "6" = "6"; "7" = "7"; "8" = "8"; "9" = "9"; "10" = "0";
+            urgent = "!"; default = " ";
           };
           on-click = "activate";
           all-outputs = false;
           sort-by-number = true;
-          persistent-workspaces = {
-            "*" = 5;
-          };
+          persistent-workspaces."*" = 5;
         };
 
         "hyprland/window" = {
           format = "{}";
-          max-length = 40;
+          max-length = 35;
           rewrite."" = " ";
         };
 
         clock = {
-          format = "  {:%H:%M}";
-          format-alt = "  {:%A, %d %B %Y  %H:%M:%S}";
+          format = " {:%H:%M}";
+          format-alt = " {:%a %d %b  %H:%M}";
           tooltip-format = "<tt><small>{calendar}</small></tt>";
           interval = 1;
-          calendar = {
-            mode = "month";
-            weeks-pos = "left";
-            format = {
-              months = "<span color='#00D3B8'><b>{}</b></span>";
-              weeks = "<span color='#585b70'><b>{}</b></span>";
-              weekdays = "<span color='#6C5CE7'><b>{}</b></span>";
-              today = "<span color='#00D3B8'><b><u>{}</u></b></span>";
-            };
-          };
         };
 
         pulseaudio = {
-          format = "{icon} {volume}%";
+          format = "{icon}{volume}%";
           format-bluetooth = " {volume}%";
-          format-muted = "  muted";
-          format-icons = {
-            headphone = " ";
-            default = [ "  " "  " "  " ];
-          };
+          format-muted = " mute";
+          format-icons.default = [ " " " " " " ];
+          format-icons.headphone = " ";
           on-click = "pavucontrol";
           on-click-right = "swayosd-client --output-volume mute-toggle";
           scroll-step = 2;
         };
 
         network = {
-          format-wifi = "  {essid}";
-          format-ethernet = "  {ifname}";
-          format-disconnected = "  offline";
-          tooltip-format = "{ipaddr}/{cidr} via {gwaddr}";
+          format-wifi = " {essid}";
+          format-ethernet = " {ifname}";
+          format-disconnected = " off";
+          tooltip-format = "{ipaddr}/{cidr}";
           on-click = "nm-connection-editor";
-          max-length = 20;
+          max-length = 14;
         };
 
         battery = {
-          format = "{icon} {capacity}%";
-          format-charging = "  {capacity}%";
-          format-plugged = "  {capacity}%";
-          format-icons = [ "  " "  " "  " "  " "  " ];
-          states = {
-            warning = 25;
-            critical = 10;
-          };
+          format = "{icon}{capacity}%";
+          format-charging = " {capacity}%";
+          format-plugged = " {capacity}%";
+          format-icons = [ " " " " " " " " " " ];
+          states = { warning = 25; critical = 10; };
           tooltip-format = "{timeTo} | {power:.1f}W";
         };
 
-        tray = {
-          icon-size = 16;
-          spacing = 8;
-        };
+        tray = { icon-size = 14; spacing = 6; };
 
-        "custom/sep-left" = {
-          format = "";
-          tooltip = false;
-        };
-
-        "custom/sep-right" = {
-          format = "";
-          tooltip = false;
-        };
+        # Powerline arrows — each bridges two background colors
+        # Left side: workspace bg → transparent
+        "custom/arrow-ws-end" = { format = ""; tooltip = false; };
+        # Clock wings
+        "custom/arrow-clock-l" = { format = ""; tooltip = false; };
+        "custom/arrow-clock-r" = { format = ""; tooltip = false; };
+        # Right side segments (transparent → seg1 → seg2 → seg3 → accent)
+        "custom/arrow-r1" = { format = ""; tooltip = false; };
+        "custom/arrow-r2" = { format = ""; tooltip = false; };
+        "custom/arrow-r3" = { format = ""; tooltip = false; };
+        "custom/arrow-r4" = { format = ""; tooltip = false; };
 
         "custom/power" = {
-          format = " ";
+          format = "";
           tooltip = false;
           on-click = "$HOME/.config/hypr/scripts/Wlogout.sh";
         };
       };
 
-      style = ''
+      style = let
+        bg0 = "#0a0a0f";     # bar background
+        seg1 = "#141420";     # pulseaudio segment
+        seg2 = "#1a1a2e";     # network segment
+        seg3 = "#222240";     # battery segment
+        accent = "#00D3B8";   # clock & accent
+        ws-bg = "#111118";    # workspace bg
+        fg = "#b4befe";
+        dim = "#45475a";
+      in ''
         * {
-          font-family: "JetBrainsMono Nerd Font", monospace;
-          font-size: 13px;
+          font-family: "JetBrainsMono Nerd Font";
+          font-size: 11px;
           min-height: 0;
           border: none;
           border-radius: 0;
         }
 
         window#waybar {
-          background: rgba(10, 10, 15, 0.85);
-          border-radius: 12px;
-          border: 1px solid rgba(0, 211, 184, 0.15);
-          color: #cdd6f4;
-        }
-
-        /* ── Powerline separators ── */
-        #custom-sep-left {
-          font-size: 18px;
-          color: rgba(0, 211, 184, 0.2);
-          padding: 0 2px;
-        }
-        #custom-sep-right {
-          font-size: 18px;
-          color: rgba(88, 91, 112, 0.3);
-          padding: 0 4px;
+          background: ${bg0};
+          border-radius: 8px;
+          color: ${fg};
         }
 
         /* ── Workspaces ── */
         #workspaces {
-          margin-left: 4px;
+          background: ${ws-bg};
+          border-radius: 8px 0 0 8px;
+          margin-left: 2px;
         }
         #workspaces button {
-          padding: 0 6px;
-          color: #585b70;
+          padding: 0 5px;
+          color: ${dim};
           background: transparent;
-          border-radius: 6px;
-          margin: 4px 2px;
-          min-width: 20px;
-          transition: all 0.2s ease;
+          min-width: 16px;
+          transition: all 0.15s ease;
         }
         #workspaces button.active {
-          color: #0a0a0f;
-          background: linear-gradient(135deg, #00D3B8, #6C5CE7);
+          color: ${accent};
           font-weight: bold;
         }
-        #workspaces button.urgent {
-          color: #0a0a0f;
-          background: #f38ba8;
-        }
-        #workspaces button:hover {
-          background: rgba(0, 211, 184, 0.2);
-          color: #00D3B8;
+        #workspaces button.urgent { color: #f38ba8; }
+        #workspaces button:hover { color: ${fg}; }
+
+        /* ── Left arrows ── */
+        #custom-arrow-ws-end {
+          font-size: 16px;
+          color: ${ws-bg};
+          background: transparent;
+          padding: 0;
         }
 
-        /* ── Window title ── */
+        /* ── Window ── */
         #window {
-          color: #585b70;
-          padding: 0 12px;
-          font-style: italic;
+          color: ${dim};
+          padding: 0 10px;
+          font-size: 10px;
         }
 
-        /* ── Clock (center) ── */
+        /* ── Clock (center accent pill) ── */
+        #custom-arrow-clock-l {
+          font-size: 16px;
+          color: ${accent};
+          background: transparent;
+          padding: 0;
+        }
         #clock {
-          color: #00D3B8;
+          background: ${accent};
+          color: ${bg0};
           font-weight: bold;
-          padding: 0 12px;
+          padding: 0 8px;
+        }
+        #custom-arrow-clock-r {
+          font-size: 16px;
+          color: ${accent};
+          background: transparent;
+          padding: 0;
+        }
+
+        /* ── Tray ── */
+        #tray {
+          padding: 0 6px;
+        }
+
+        /* ── Right powerline arrows ── */
+        #custom-arrow-r1 {
+          font-size: 16px;
+          color: ${seg1};
+          background: transparent;
+          padding: 0;
+        }
+        #custom-arrow-r2 {
+          font-size: 16px;
+          color: ${seg2};
+          background: ${seg1};
+          padding: 0;
+        }
+        #custom-arrow-r3 {
+          font-size: 16px;
+          color: ${seg3};
+          background: ${seg2};
+          padding: 0;
+        }
+        #custom-arrow-r4 {
+          font-size: 16px;
+          color: ${accent};
+          background: ${seg3};
+          padding: 0;
         }
 
         /* ── Right modules ── */
-        #pulseaudio, #network, #battery, #tray {
-          padding: 0 10px;
-          margin: 4px 0;
-        }
-
         #pulseaudio {
-          color: #6C5CE7;
-        }
-        #pulseaudio.muted {
-          color: #585b70;
-        }
-
-        #network {
-          color: #00D3B8;
-        }
-        #network.disconnected {
-          color: #585b70;
-        }
-
-        #battery {
-          color: #a6e3a1;
-        }
-        #battery.warning {
-          color: #fab387;
-        }
-        #battery.critical {
-          color: #f38ba8;
-          animation: blink 1s linear infinite;
-        }
-        #battery.charging {
-          color: #00D3B8;
-        }
-
-        @keyframes blink {
-          to { color: #585b70; }
-        }
-
-        #tray {
+          background: ${seg1};
+          color: #cba6f7;
           padding: 0 8px;
         }
+        #pulseaudio.muted { color: ${dim}; }
 
-        /* ── Power button ── */
+        #network {
+          background: ${seg2};
+          color: ${accent};
+          padding: 0 8px;
+        }
+        #network.disconnected { color: ${dim}; }
+
+        #battery {
+          background: ${seg3};
+          color: #a6e3a1;
+          padding: 0 8px;
+        }
+        #battery.warning { color: #fab387; }
+        #battery.critical { color: #f38ba8; }
+        #battery.charging { color: ${accent}; }
+
+        /* ── Power ── */
         #custom-power {
-          color: #f38ba8;
-          padding: 0 10px 0 6px;
-          margin: 4px 4px 4px 0;
+          background: ${accent};
+          color: ${bg0};
+          padding: 0 7px;
+          border-radius: 0 8px 8px 0;
+          margin-right: 2px;
         }
-        #custom-power:hover {
-          color: #eba0ac;
-        }
+        #custom-power:hover { background: #00b89e; }
 
         tooltip {
-          background: rgba(10, 10, 15, 0.95);
-          border: 1px solid rgba(0, 211, 184, 0.3);
-          border-radius: 8px;
-          color: #cdd6f4;
-        }
-        tooltip label {
-          color: #cdd6f4;
+          background: ${bg0};
+          border: 1px solid rgba(0, 211, 184, 0.25);
+          border-radius: 6px;
+          color: ${fg};
         }
       '';
     };
@@ -1591,6 +1589,138 @@ in {
             background-color: transparent;
             text-color: inherit;
             vertical-align: 0.5;
+          }
+        '';
+
+        # ── SwayNC — compact dark notifications ─────────────────
+        "swaync/config.json".text = builtins.toJSON {
+          "$schema" = "/etc/xdg/swaync/configSchema.json";
+          positionX = "right";
+          positionY = "top";
+          control-center-margin-top = 8;
+          control-center-margin-bottom = 8;
+          control-center-margin-right = 8;
+          notification-icon-size = 48;
+          notification-body-image-height = 80;
+          notification-body-image-width = 200;
+          timeout = 6;
+          timeout-low = 4;
+          timeout-critical = 0;
+          fit-to-screen = true;
+          control-center-width = 350;
+          notification-window-width = 340;
+          keyboard-shortcuts = true;
+          image-visibility = "when-available";
+          transition-time = 200;
+          hide-on-clear = false;
+          hide-on-action = true;
+          script-fail-notify = true;
+          widgets = [ "title" "notifications" "mpris" "volume" "buttons-grid" ];
+          widget-config = {
+            title = {
+              text = "Notifications";
+              clear-all-button = true;
+              button-text = "Clear";
+            };
+            volume = { label = " "; };
+            mpris = {
+              image-size = 48;
+              blur = true;
+            };
+            buttons-grid = {
+              actions = [
+                { label = " "; command = "nm-connection-editor"; }
+                { label = " "; command = "blueman-manager"; }
+                { label = " "; command = "pavucontrol"; }
+                { label = " "; command = "hyprctl dispatch dpms off"; }
+              ];
+            };
+          };
+        };
+
+        "swaync/style.css".text = ''
+          * {
+            font-family: "JetBrainsMono Nerd Font";
+            font-size: 11px;
+          }
+          .notification-row {
+            outline: none;
+          }
+          .notification {
+            background: rgba(10, 10, 15, 0.92);
+            border: 1px solid rgba(0, 211, 184, 0.15);
+            border-radius: 8px;
+            margin: 4px 0;
+            padding: 0;
+          }
+          .notification-content {
+            padding: 8px 10px;
+          }
+          .summary {
+            color: #cdd6f4;
+            font-weight: bold;
+            font-size: 11px;
+          }
+          .body {
+            color: #a6adc8;
+            font-size: 10px;
+          }
+          .close-button {
+            background: rgba(243, 139, 168, 0.15);
+            color: #f38ba8;
+            border-radius: 6px;
+            padding: 2px 6px;
+            margin: 6px;
+          }
+          .close-button:hover {
+            background: rgba(243, 139, 168, 0.3);
+          }
+          .notification-action {
+            background: rgba(0, 211, 184, 0.1);
+            color: #00D3B8;
+            border-radius: 6px;
+            margin: 4px;
+            padding: 4px 8px;
+          }
+          .notification-action:hover {
+            background: rgba(0, 211, 184, 0.2);
+          }
+          .control-center {
+            background: rgba(10, 10, 15, 0.95);
+            border: 1px solid rgba(0, 211, 184, 0.15);
+            border-radius: 10px;
+            padding: 8px;
+          }
+          .control-center .notification {
+            margin: 4px 0;
+          }
+          .widget-title {
+            color: #00D3B8;
+            font-weight: bold;
+            padding: 6px 8px;
+          }
+          .widget-title button {
+            background: rgba(243, 139, 168, 0.1);
+            color: #f38ba8;
+            border-radius: 6px;
+            padding: 2px 10px;
+          }
+          .widget-volume {
+            padding: 4px 8px;
+          }
+          .widget-buttons-grid {
+            padding: 4px;
+          }
+          .widget-buttons-grid > flowbox > flowboxchild > button {
+            background: rgba(0, 211, 184, 0.08);
+            color: #b4befe;
+            border-radius: 6px;
+            padding: 6px;
+            margin: 2px;
+          }
+          .widget-buttons-grid > flowbox > flowboxchild > button:hover {
+            background: rgba(0, 211, 184, 0.18);
+            color: #00D3B8;
           }
         '';
       };
