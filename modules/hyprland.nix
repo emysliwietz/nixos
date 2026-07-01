@@ -477,18 +477,6 @@ in {
           class = "hyprwinwrap";
         };
 
-        # ── Liquid-glass plugin ──────────────────────────────────
-        plugin.liquid-glass = {
-          enabled = true;
-          blur_strength = 0.5;
-          refraction_strength = 0.04;
-          chromatic_aberration = 0.006;
-          fresnel_strength = 0.2;
-          specular_strength = 0.15;
-          glass_opacity = 1.0;
-          edge_thickness = 0.15;
-        };
-
         # ── Touchpad device ──────────────────────────────────────
         device = {
           name = "asue1209:00-04f3:319f-touchpad";
@@ -623,7 +611,7 @@ in {
           "opacity 0.94 0.86, tag:im*"
           "opacity 0.94 0.86, tag:multimedia*"
           "opacity 0.9 0.8, tag:file-manager*"
-          "opacity 0.8 0.7, tag:terminal*"
+          "opacity 0.92 0.85, tag:terminal*"
           "opacity 0.8 0.7, tag:settings*"
           "opacity 0.82 0.75, tag:viewer*"
           "opacity 0.9 0.7, tag:wallpaper*"
@@ -647,9 +635,6 @@ in {
           # Games
           "noblur, tag:games*"
           "fullscreen, tag:games*"
-
-          # Liquid glass: disable blur for floating (plugin handles it)
-          "noblur, floating:1"
 
           # Firefox: full opacity override
           "opacity 1.0 override 1.0 override, class:^(firefox)$"
