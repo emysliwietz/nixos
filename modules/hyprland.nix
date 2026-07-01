@@ -88,7 +88,7 @@ in {
     ags
 
     # Launcher & power menu
-    rofi-wayland
+    rofi
     wlogout
 
     # Wallpaper & color generation
@@ -1190,7 +1190,7 @@ in {
     };
 
     # ── Shell alias for hyprwinwrap ───────────────────────────────
-    programs.zsh.initExtra = ''
+    programs.zsh.initContent = ''
       live-wallpaper() {
         if [ -z "$1" ]; then
           echo "Usage: live-wallpaper <command>"
