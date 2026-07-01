@@ -95,8 +95,7 @@ in {
     swww
     wallust
 
-    # Screenshots
-    flameshot
+    # Screenshots (flameshot in its own module)
     grim
     slurp
     swappy
@@ -256,7 +255,6 @@ in {
           "ags"
           "blueman-applet"
           "waybar"
-          "XDG_CURRENT_DESKTOP=sway flameshot"
           "wl-paste --type text --watch cliphist store"
           "wl-paste --type image --watch cliphist store"
           "/home/user/.scripts/keepassunlock"
@@ -297,7 +295,7 @@ in {
 
         # ── General ──────────────────────────────────────────────
         general = {
-          border_size = 3;
+          border_size = 1;
           gaps_in = 3;
           gaps_out = 5;
           resize_on_border = true;
@@ -383,15 +381,8 @@ in {
         };
 
         # ── Gestures ─────────────────────────────────────────────
-        gestures = {
-          workspace_swipe = true;
-          workspace_swipe_distance = 500;
-          workspace_swipe_invert = true;
-          workspace_swipe_min_speed_to_force = 30;
-          workspace_swipe_cancel_ratio = 0.5;
-          workspace_swipe_create_new = true;
-          workspace_swipe_forever = true;
-        };
+        # workspace_swipe* removed in Hyprland 0.52 (always enabled now)
+        gestures = {};
 
         # ── Misc ─────────────────────────────────────────────────
         misc = {
@@ -416,9 +407,8 @@ in {
 
         xwayland.force_zero_scaling = true;
 
+        # explicit_sync removed in Hyprland 0.52 (always on now)
         render = {
-          explicit_sync = 2;
-          explicit_sync_kms = 2;
           direct_scanout = 0;
         };
 
@@ -839,7 +829,7 @@ in {
           "$mainMod ALT, B, exec, $scriptsDir/WaybarLayout.sh"
 
           # Screenshots
-          "$mainMod, Print, exec, XDG_CURRENT_DESKTOP=sway flameshot gui"
+          ''$mainMod, Print, exec, grim -g "$(slurp)" - | swappy -f -''
           "$mainMod SHIFT, S, exec, $scriptsDir/ScreenShot.sh --swappy"
           "$mainMod, F6, exec, $scriptsDir/ScreenShot.sh --now"
           "$mainMod SHIFT, F6, exec, $scriptsDir/ScreenShot.sh --area"
@@ -916,8 +906,8 @@ in {
         listener = [
           {
             timeout = 540;
-            on-timeout = ''notify-send " You are idle!"'';
-            on-resume = ''notify-send " Oh! you're Back" " Hello !!!"'';
+            on-timeout = "notify-send 'Idle' 'You are idle!'";
+            on-resume = "notify-send 'Welcome back!' 'Session resumed'";
           }
           {
             timeout = 600;
@@ -1189,6 +1179,273 @@ in {
       automount = true;
     };
 
+    # ── Waybar — powerline dark theme ─────────────────────────
+    programs.waybar = {
+      enable = true;
+      systemd.enable = false; # started via exec-once
+      settings.mainBar = {
+        layer = "top";
+        position = "top";
+        height = 34;
+        spacing = 0;
+        margin-top = 4;
+        margin-left = 8;
+        margin-right = 8;
+
+        modules-left = [
+          "hyprland/workspaces"
+          "custom/sep-left"
+          "hyprland/window"
+        ];
+        modules-center = [ "clock" ];
+        modules-right = [
+          "tray"
+          "custom/sep-right"
+          "pulseaudio"
+          "custom/sep-right"
+          "network"
+          "custom/sep-right"
+          "battery"
+          "custom/sep-right"
+          "custom/power"
+        ];
+
+        "hyprland/workspaces" = {
+          format = "{icon}";
+          format-icons = {
+            "1" = "1";
+            "2" = "2";
+            "3" = "3";
+            "4" = "4";
+            "5" = "5";
+            "6" = "6";
+            "7" = "7";
+            "8" = "8";
+            "9" = "9";
+            "10" = "10";
+            urgent = "!";
+            default = " ";
+          };
+          on-click = "activate";
+          all-outputs = false;
+          sort-by-number = true;
+          persistent-workspaces = {
+            "*" = 5;
+          };
+        };
+
+        "hyprland/window" = {
+          format = "{}";
+          max-length = 40;
+          rewrite."" = " ";
+        };
+
+        clock = {
+          format = "  {:%H:%M}";
+          format-alt = "  {:%A, %d %B %Y  %H:%M:%S}";
+          tooltip-format = "<tt><small>{calendar}</small></tt>";
+          interval = 1;
+          calendar = {
+            mode = "month";
+            weeks-pos = "left";
+            format = {
+              months = "<span color='#00D3B8'><b>{}</b></span>";
+              weeks = "<span color='#585b70'><b>{}</b></span>";
+              weekdays = "<span color='#6C5CE7'><b>{}</b></span>";
+              today = "<span color='#00D3B8'><b><u>{}</u></b></span>";
+            };
+          };
+        };
+
+        pulseaudio = {
+          format = "{icon} {volume}%";
+          format-bluetooth = " {volume}%";
+          format-muted = "  muted";
+          format-icons = {
+            headphone = " ";
+            default = [ "  " "  " "  " ];
+          };
+          on-click = "pavucontrol";
+          on-click-right = "swayosd-client --output-volume mute-toggle";
+          scroll-step = 2;
+        };
+
+        network = {
+          format-wifi = "  {essid}";
+          format-ethernet = "  {ifname}";
+          format-disconnected = "  offline";
+          tooltip-format = "{ipaddr}/{cidr} via {gwaddr}";
+          on-click = "nm-connection-editor";
+          max-length = 20;
+        };
+
+        battery = {
+          format = "{icon} {capacity}%";
+          format-charging = "  {capacity}%";
+          format-plugged = "  {capacity}%";
+          format-icons = [ "  " "  " "  " "  " "  " ];
+          states = {
+            warning = 25;
+            critical = 10;
+          };
+          tooltip-format = "{timeTo} | {power:.1f}W";
+        };
+
+        tray = {
+          icon-size = 16;
+          spacing = 8;
+        };
+
+        "custom/sep-left" = {
+          format = "";
+          tooltip = false;
+        };
+
+        "custom/sep-right" = {
+          format = "";
+          tooltip = false;
+        };
+
+        "custom/power" = {
+          format = " ";
+          tooltip = false;
+          on-click = "$HOME/.config/hypr/scripts/Wlogout.sh";
+        };
+      };
+
+      style = ''
+        * {
+          font-family: "JetBrainsMono Nerd Font", monospace;
+          font-size: 13px;
+          min-height: 0;
+          border: none;
+          border-radius: 0;
+        }
+
+        window#waybar {
+          background: rgba(10, 10, 15, 0.85);
+          border-radius: 12px;
+          border: 1px solid rgba(0, 211, 184, 0.15);
+          color: #cdd6f4;
+        }
+
+        /* ── Powerline separators ── */
+        #custom-sep-left {
+          font-size: 18px;
+          color: rgba(0, 211, 184, 0.2);
+          padding: 0 2px;
+        }
+        #custom-sep-right {
+          font-size: 18px;
+          color: rgba(88, 91, 112, 0.3);
+          padding: 0 4px;
+        }
+
+        /* ── Workspaces ── */
+        #workspaces {
+          margin-left: 4px;
+        }
+        #workspaces button {
+          padding: 0 6px;
+          color: #585b70;
+          background: transparent;
+          border-radius: 6px;
+          margin: 4px 2px;
+          min-width: 20px;
+          transition: all 0.2s ease;
+        }
+        #workspaces button.active {
+          color: #0a0a0f;
+          background: linear-gradient(135deg, #00D3B8, #6C5CE7);
+          font-weight: bold;
+        }
+        #workspaces button.urgent {
+          color: #0a0a0f;
+          background: #f38ba8;
+        }
+        #workspaces button:hover {
+          background: rgba(0, 211, 184, 0.2);
+          color: #00D3B8;
+        }
+
+        /* ── Window title ── */
+        #window {
+          color: #585b70;
+          padding: 0 12px;
+          font-style: italic;
+        }
+
+        /* ── Clock (center) ── */
+        #clock {
+          color: #00D3B8;
+          font-weight: bold;
+          padding: 0 12px;
+        }
+
+        /* ── Right modules ── */
+        #pulseaudio, #network, #battery, #tray {
+          padding: 0 10px;
+          margin: 4px 0;
+        }
+
+        #pulseaudio {
+          color: #6C5CE7;
+        }
+        #pulseaudio.muted {
+          color: #585b70;
+        }
+
+        #network {
+          color: #00D3B8;
+        }
+        #network.disconnected {
+          color: #585b70;
+        }
+
+        #battery {
+          color: #a6e3a1;
+        }
+        #battery.warning {
+          color: #fab387;
+        }
+        #battery.critical {
+          color: #f38ba8;
+          animation: blink 1s linear infinite;
+        }
+        #battery.charging {
+          color: #00D3B8;
+        }
+
+        @keyframes blink {
+          to { color: #585b70; }
+        }
+
+        #tray {
+          padding: 0 8px;
+        }
+
+        /* ── Power button ── */
+        #custom-power {
+          color: #f38ba8;
+          padding: 0 10px 0 6px;
+          margin: 4px 4px 4px 0;
+        }
+        #custom-power:hover {
+          color: #eba0ac;
+        }
+
+        tooltip {
+          background: rgba(10, 10, 15, 0.95);
+          border: 1px solid rgba(0, 211, 184, 0.3);
+          border-radius: 8px;
+          color: #cdd6f4;
+        }
+        tooltip label {
+          color: #cdd6f4;
+        }
+      '';
+    };
+
     # ── Shell alias for hyprwinwrap ───────────────────────────────
     programs.zsh.initContent = ''
       live-wallpaper() {
@@ -1215,6 +1472,7 @@ in {
       mkdir -p "$HOME/.config/hypr/wallpaper_effects"
       mkdir -p "$HOME/Pictures/Screenshots"
       mkdir -p "$HOME/.config/hypr/wallust"
+      touch "$HOME/.config/hypr/wallust/wallust-hyprland.conf"
     '';
 
     # ── Scripts & animation presets ──────────────────────────────
@@ -1224,6 +1482,117 @@ in {
     xdg.configFile =
       deployWhitelistedScripts (moduleDir + "/scripts") "scripts" coreScripts
       // deployWhitelistedScripts (moduleDir + "/UserScripts") "UserScripts" userScripts
-      // deployFiles (moduleDir + "/animations") "animations";
+      // deployFiles (moduleDir + "/animations") "animations"
+      // {
+        # ── Rofi — dark teal theme ──────────────────────────────
+        "rofi/config.rasi".text = ''
+          configuration {
+            modi: "run,drun,window,filebrowser";
+            show-icons: true;
+            font: "JetBrainsMono Nerd Font 12";
+            display-drun: "  Apps";
+            display-run: "  Run";
+            display-window: "  Windows";
+            display-filebrowser: "  Files";
+          }
+
+          @theme "custom-dark"
+        '';
+
+        "rofi/themes/custom-dark.rasi".text = ''
+          * {
+            bg:       rgba(10, 10, 15, 0.92);
+            bg-alt:   rgba(30, 30, 46, 0.95);
+            fg:       #cdd6f4;
+            fg-dim:   #585b70;
+            accent:   #00D3B8;
+            accent2:  #6C5CE7;
+            urgent:   #f38ba8;
+            border-colour: rgba(0, 211, 184, 0.3);
+            selected: rgba(0, 211, 184, 0.15);
+
+            font: "JetBrainsMono Nerd Font 12";
+            border-radius: 12px;
+          }
+
+          window {
+            width: 600px;
+            transparency: "real";
+            background-color: @bg;
+            border: 1px solid;
+            border-color: @border-colour;
+            border-radius: 12px;
+            padding: 0;
+          }
+
+          mainbox {
+            background-color: transparent;
+            children: [ inputbar, listview ];
+            spacing: 0;
+            padding: 0;
+          }
+
+          inputbar {
+            background-color: @bg-alt;
+            padding: 14px 16px;
+            border-radius: 12px 12px 0 0;
+            children: [ prompt, entry ];
+            spacing: 10px;
+          }
+
+          prompt {
+            background-color: transparent;
+            text-color: @accent;
+            font: "JetBrainsMono Nerd Font Bold 12";
+          }
+
+          entry {
+            background-color: transparent;
+            text-color: @fg;
+            placeholder: "Search...";
+            placeholder-color: @fg-dim;
+          }
+
+          listview {
+            background-color: transparent;
+            padding: 8px;
+            columns: 1;
+            lines: 8;
+            spacing: 4px;
+            scrollbar: false;
+            fixed-height: true;
+          }
+
+          element {
+            background-color: transparent;
+            text-color: @fg;
+            padding: 10px 14px;
+            border-radius: 8px;
+            spacing: 10px;
+          }
+
+          element selected.normal {
+            background-color: @selected;
+            text-color: @accent;
+            border: 0 0 0 3px solid;
+            border-color: @accent;
+          }
+
+          element normal.urgent, element alternate.urgent {
+            text-color: @urgent;
+          }
+
+          element-icon {
+            size: 22px;
+            background-color: transparent;
+          }
+
+          element-text {
+            background-color: transparent;
+            text-color: inherit;
+            vertical-align: 0.5;
+          }
+        '';
+      };
   }; # end home-manager.users.user
 }
