@@ -1,20 +1,8 @@
-# iriunwebcam-module.nix — NixOS module
-#
-# Wire into your flake.nix like this:
-#
-#   nixosConfigurations.myhostname = nixpkgs.lib.nixosSystem {
-#     modules = [
-#       ./configuration.nix
-#       ./iriunwebcam-module.nix   # ← add this line
-#     ];
-#   };
-#
-# Then: nixos-rebuild switch --flake .#myhostname
-
+# iriunwebcam — NixOS module
 { config, lib, pkgs, ... }:
 
 let
-  iriunwebcam = pkgs.callPackage ./iriunwebcam.nix {};
+  iriunwebcam = pkgs.callPackage ./iriunwebcam/package.nix {};
 in
 {
   # ── Kernel modules ──────────────────────────────────────────────────────────
@@ -36,7 +24,7 @@ in
     nssmdns4     = true;   # resolves .local hostnames
     openFirewall = true;   # opens UDP 5353 for mDNS
   };
- 
+
   networking.firewall.allowedTCPPorts = [ 9901 ];
   networking.firewall.allowedUDPPorts = [ 9901 ];
 
@@ -46,9 +34,6 @@ in
     pkgs.android-tools   # adb — needed for USB connection mode
   ];
 
-  # ── Device access ────────────────────────────────────────────────────────────
-  # Your user needs `video` (for /dev/video*) and `audio` (for ALSA loopback).
-  # Either add this here:
+  # ── Device access ──────────────────────────────────────────────────────────
   users.users."user".extraGroups = [ "video" "audio" ];
-  # Or add it wherever you already configure your user.
 }

@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  moduleDir = ./.;
+  moduleDir = ./hyprland;
 
   # Deploy only whitelisted scripts from a directory
   deployWhitelistedScripts = srcDir: destPrefix: names:
@@ -75,8 +75,6 @@ let
 
 in {
 
-  programs.hyprland.enable = true;
-
   # ── System packages (only what's NOT already in other modules) ─────
   environment.systemPackages = with pkgs; [
     # Hyprland ecosystem
@@ -141,8 +139,6 @@ in {
     kdePackages.ark
   ];
 
-  # SwayOSD udev rules (brightness control permissions)
-  # services.swayosd.enable = true;
 
   fonts.packages = with pkgs; [
     victor-mono
@@ -150,7 +146,7 @@ in {
   ];
 
   # ── Home-manager ───────────────────────────────────────────────────
-  home-manager.users.user = { pkgs, ... }: {
+  home-manager.users.user = { pkgs, lib, ... }: {
 
     # ────────────────────────────────────────────────────────────────
     # Hyprland compositor — all config via settings attrset
@@ -263,6 +259,9 @@ in {
           "XDG_CURRENT_DESKTOP=sway flameshot"
           "wl-paste --type text --watch cliphist store"
           "wl-paste --type image --watch cliphist store"
+          "/home/user/.scripts/keepassunlock"
+          "signal-desktop --start-in-tray --no-sandbox --password-store=gnome-libsecret"
+          "emacs --bg-daemon"
         ];
 
         # ── Input ────────────────────────────────────────────────
@@ -927,7 +926,6 @@ in {
         ];
       };
     };
-
 
     # ────────────────────────────────────────────────────────────────
     # Hyprlock — uses extraConfig for wallust source ordering

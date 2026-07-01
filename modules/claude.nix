@@ -1,6 +1,5 @@
 # Claude Code from sadjow/claude-code-nix + its binary cache
-{ claude-code }:
-{ pkgs, ... }:
+{ pkgs, claude-code, ... }:
 {
   environment.systemPackages = [
     claude-code.packages.${pkgs.stdenv.hostPlatform.system}.default
