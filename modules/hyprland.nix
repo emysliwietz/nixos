@@ -326,8 +326,8 @@ in {
           active_opacity = 1.0;
           inactive_opacity = 0.92;
           fullscreen_opacity = 1.0;
-          dim_inactive = true;
-          dim_strength = 0.15;
+          dim_inactive = false;
+          dim_strength = 0;
           dim_special = 0.8;
 
           shadow = {
@@ -437,20 +437,9 @@ in {
           color = "rgba(00D3B8aa)"; # teal trail matching border gradient
         };
 
-        # ── Hyprfocus — flash/animate on focus change
+        # ── Hyprfocus — disabled (user prefers border-only focus indicator)
         plugin.hyprfocus = {
-          enabled = true;
-          animate_floating = true;
-          animate_workspacechange = true;
-          focus_animation = "shrink"; # "flash" or "shrink"
-          bezier = [ "realsmooth, 0.28, 0.29, 0.69, 1.08" ];
-          shrink = {
-            shrink_percentage = 0.95;
-            in_bezier = "realsmooth";
-            in_speed = 1;
-            out_bezier = "realsmooth";
-            out_speed = 2;
-          };
+          enabled = false;
         };
 
         # ── Hyprspace — macOS Mission Control-like overview
@@ -1259,15 +1248,15 @@ in {
 
         # Powerline arrows — each bridges two background colors
         # Left side: workspace bg → transparent
-        "custom/arrow-ws-end" = { format = ""; tooltip = false; };
+        "custom/arrow-ws-end" = { format = ""; tooltip = false; };
         # Clock wings
-        "custom/arrow-clock-l" = { format = ""; tooltip = false; };
-        "custom/arrow-clock-r" = { format = ""; tooltip = false; };
+        "custom/arrow-clock-l" = { format = ""; tooltip = false; };
+        "custom/arrow-clock-r" = { format = ""; tooltip = false; };
         # Right side segments (transparent → seg1 → seg2 → seg3 → accent)
-        "custom/arrow-r1" = { format = ""; tooltip = false; };
-        "custom/arrow-r2" = { format = ""; tooltip = false; };
-        "custom/arrow-r3" = { format = ""; tooltip = false; };
-        "custom/arrow-r4" = { format = ""; tooltip = false; };
+        "custom/arrow-r1" = { format = ""; tooltip = false; };
+        "custom/arrow-r2" = { format = ""; tooltip = false; };
+        "custom/arrow-r3" = { format = ""; tooltip = false; };
+        "custom/arrow-r4" = { format = ""; tooltip = false; };
 
         "custom/power" = {
           format = "";
@@ -1277,14 +1266,15 @@ in {
       };
 
       style = let
-        bg0 = "#0a0a0f";     # bar background
-        seg1 = "#141420";     # pulseaudio segment
-        seg2 = "#1a1a2e";     # network segment
-        seg3 = "#222240";     # battery segment
-        accent = "#00D3B8";   # clock & accent
-        ws-bg = "#111118";    # workspace bg
+        bg0 = "#0a0a0f";
+        seg1 = "#141420";
+        seg2 = "#1a1a2e";
+        seg3 = "#222240";
+        accent = "#1a9985";   # muted teal — not blinding
+        ws-bg = "#111118";
         fg = "#b4befe";
         dim = "#45475a";
+        arrow = "26px";       # match bar height for seamless arrows
       in ''
         * {
           font-family: "JetBrainsMono Nerd Font";
@@ -1292,6 +1282,8 @@ in {
           min-height: 0;
           border: none;
           border-radius: 0;
+          padding: 0;
+          margin: 0;
         }
 
         window#waybar {
@@ -1314,18 +1306,19 @@ in {
           transition: all 0.15s ease;
         }
         #workspaces button.active {
-          color: ${accent};
+          color: #00D3B8;
           font-weight: bold;
         }
         #workspaces button.urgent { color: #f38ba8; }
         #workspaces button:hover { color: ${fg}; }
 
-        /* ── Left arrows ── */
+        /* ── Left arrow ── */
         #custom-arrow-ws-end {
-          font-size: 16px;
+          font-size: ${arrow};
           color: ${ws-bg};
           background: transparent;
           padding: 0;
+          margin: 0;
         }
 
         /* ── Window ── */
@@ -1335,24 +1328,26 @@ in {
           font-size: 10px;
         }
 
-        /* ── Clock (center accent pill) ── */
+        /* ── Clock (center pill) ── */
         #custom-arrow-clock-l {
-          font-size: 16px;
+          font-size: ${arrow};
           color: ${accent};
           background: transparent;
           padding: 0;
+          margin: 0;
         }
         #clock {
           background: ${accent};
-          color: ${bg0};
+          color: #e0e0e0;
           font-weight: bold;
           padding: 0 8px;
         }
         #custom-arrow-clock-r {
-          font-size: 16px;
+          font-size: ${arrow};
           color: ${accent};
           background: transparent;
           padding: 0;
+          margin: 0;
         }
 
         /* ── Tray ── */
@@ -1362,28 +1357,28 @@ in {
 
         /* ── Right powerline arrows ── */
         #custom-arrow-r1 {
-          font-size: 16px;
+          font-size: ${arrow};
           color: ${seg1};
           background: transparent;
-          padding: 0;
+          padding: 0; margin: 0;
         }
         #custom-arrow-r2 {
-          font-size: 16px;
+          font-size: ${arrow};
           color: ${seg2};
           background: ${seg1};
-          padding: 0;
+          padding: 0; margin: 0;
         }
         #custom-arrow-r3 {
-          font-size: 16px;
+          font-size: ${arrow};
           color: ${seg3};
           background: ${seg2};
-          padding: 0;
+          padding: 0; margin: 0;
         }
         #custom-arrow-r4 {
-          font-size: 16px;
+          font-size: ${arrow};
           color: ${accent};
           background: ${seg3};
-          padding: 0;
+          padding: 0; margin: 0;
         }
 
         /* ── Right modules ── */
@@ -1396,7 +1391,7 @@ in {
 
         #network {
           background: ${seg2};
-          color: ${accent};
+          color: #00D3B8;
           padding: 0 8px;
         }
         #network.disconnected { color: ${dim}; }
@@ -1585,15 +1580,15 @@ in {
           control-center-margin-top = 8;
           control-center-margin-bottom = 8;
           control-center-margin-right = 8;
-          notification-icon-size = 48;
-          notification-body-image-height = 80;
-          notification-body-image-width = 200;
+          notification-icon-size = 32;
+          notification-body-image-height = 50;
+          notification-body-image-width = 140;
           timeout = 6;
           timeout-low = 4;
           timeout-critical = 0;
           fit-to-screen = true;
-          control-center-width = 350;
-          notification-window-width = 340;
+          control-center-width = 280;
+          notification-window-width = 260;
           keyboard-shortcuts = true;
           image-visibility = "when-available";
           transition-time = 200;
@@ -1639,16 +1634,16 @@ in {
             padding: 0;
           }
           .notification-content {
-            padding: 8px 10px;
+            padding: 5px 8px;
           }
           .summary {
             color: #cdd6f4;
             font-weight: bold;
-            font-size: 11px;
+            font-size: 10px;
           }
           .body {
             color: #a6adc8;
-            font-size: 10px;
+            font-size: 9px;
           }
           .close-button {
             background: rgba(243, 139, 168, 0.15);
