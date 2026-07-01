@@ -8,6 +8,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./hyprland
   ] ++ (
     # Auto-import every .nix file under ./modules/
     let dir = ./modules; in
