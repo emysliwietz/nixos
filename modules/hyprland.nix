@@ -367,7 +367,7 @@ in {
             "windowsIn, 1, 4, bounce, popin 60%"        # bouncy pop-in
             "windowsOut, 1, 3, smoothOut, popin 80%"    # pop out
             "windowsMove, 1, 4, snappy, slide"
-            "border, 1, 10, liner"                      # smooth border transitions
+            "border, 1, 1, liner"                       # instant border flash on focus
             "borderangle, 1, 50, liner, loop"           # rotating gradient border!
             "fade, 1, 3, smoothOut"
             "fadeDim, 1, 4, smoothIn"                   # smooth dim transition
@@ -1253,10 +1253,10 @@ in {
         "custom/arrow-clock-l" = { format = ""; tooltip = false; };
         "custom/arrow-clock-r" = { format = ""; tooltip = false; };
         # Right side segments (transparent → seg1 → seg2 → seg3 → accent)
-        "custom/arrow-r1" = { format = ""; tooltip = false; };
-        "custom/arrow-r2" = { format = ""; tooltip = false; };
-        "custom/arrow-r3" = { format = ""; tooltip = false; };
-        "custom/arrow-r4" = { format = ""; tooltip = false; };
+        "custom/arrow-r1" = { format = ""; tooltip = false; };
+        "custom/arrow-r2" = { format = ""; tooltip = false; };
+        "custom/arrow-r3" = { format = ""; tooltip = false; };
+        "custom/arrow-r4" = { format = ""; tooltip = false; };
 
         "custom/power" = {
           format = "";
@@ -1274,7 +1274,7 @@ in {
         ws-bg = "#111118";
         fg = "#b4befe";
         dim = "#45475a";
-        arrow = "26px";       # match bar height for seamless arrows
+        arrow = "19px";
       in ''
         * {
           font-family: "JetBrainsMono Nerd Font";
@@ -1355,7 +1355,8 @@ in {
           padding: 0 6px;
         }
 
-        /* ── Right powerline arrows ── */
+        /* ── Right powerline arrows (◀ left-pointing) ── */
+        /* For ◀: fg = right segment bg, bg = left segment bg */
         #custom-arrow-r1 {
           font-size: ${arrow};
           color: ${seg1};
