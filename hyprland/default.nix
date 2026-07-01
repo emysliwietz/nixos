@@ -140,7 +140,7 @@ in {
   ];
 
   # SwayOSD udev rules (brightness control permissions)
-  services.swayosd.enable = true;
+  # services.swayosd.enable = true;
 
   fonts.packages = with pkgs; [
     victor-mono
