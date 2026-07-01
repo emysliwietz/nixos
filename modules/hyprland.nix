@@ -117,7 +117,7 @@ in {
     # Theming
     kdePackages.breeze
     nwg-look
-    qt5ct
+    libsForQt5.qt5ct
     qt6ct
 
     # Polkit agent (KDE, matches existing Plasma6 session)
