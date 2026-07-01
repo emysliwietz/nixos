@@ -611,7 +611,7 @@ in {
           "opacity 0.94 0.86, tag:im*"
           "opacity 0.94 0.86, tag:multimedia*"
           "opacity 0.9 0.8, tag:file-manager*"
-          "opacity 0.92 0.85, tag:terminal*"
+          "opacity 0.97 0.95, tag:terminal*"
           "opacity 0.8 0.7, tag:settings*"
           "opacity 0.82 0.75, tag:viewer*"
           "opacity 0.9 0.7, tag:wallpaper*"
