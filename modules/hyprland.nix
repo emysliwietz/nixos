@@ -1178,6 +1178,7 @@ in {
           "custom/arrow-clock-r"
         ];
         modules-right = [
+          "custom/arrow-r0"
           "tray"
           "custom/arrow-r1"
           "pulseaudio"
@@ -1245,6 +1246,7 @@ in {
         };
 
         tray = { icon-size = 14; spacing = 6; };
+        "custom/arrow-r0" = { format = ""; tooltip = false; };
 
         # Powerline arrows — each bridges two background colors
         # Left side: workspace bg → transparent
@@ -1267,10 +1269,11 @@ in {
 
       style = let
         bg0 = "#0a0a0f";
+        tray-bg = "#0f0f18";
         seg1 = "#141420";
         seg2 = "#1a1a2e";
         seg3 = "#222240";
-        accent = "#1a9985";   # muted teal — not blinding
+        accent = "#0f5e53";   # dark muted teal
         ws-bg = "#111118";
         fg = "#b4befe";
         dim = "#45475a";
@@ -1351,7 +1354,14 @@ in {
         }
 
         /* ── Tray ── */
+        #custom-arrow-r0 {
+          font-size: ${arrow};
+          color: ${tray-bg};
+          background: transparent;
+          padding: 0; margin: 0;
+        }
         #tray {
+          background: ${tray-bg};
           padding: 0 6px;
         }
 
@@ -1360,7 +1370,7 @@ in {
         #custom-arrow-r1 {
           font-size: ${arrow};
           color: ${seg1};
-          background: transparent;
+          background: ${tray-bg};
           padding: 0; margin: 0;
         }
         #custom-arrow-r2 {
