@@ -89,7 +89,7 @@
 
   home-manager.useGlobalPkgs = true; # uses system pkgs, avoids a second nixpkgs eval
   home-manager.useUserPackages = true; # installs packages to /etc/profiles/per-user/...
-  home-manager.backupFileExtension = "hm-backup";
+  home-manager.backupCommand = "bash -c 'rm -f \"$1.hm-backup\" && mv \"$1\" \"$1.hm-backup\"' --";
 
   home-manager.users.user =
     { pkgs, ... }:
