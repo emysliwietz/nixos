@@ -1273,7 +1273,7 @@ in {
         seg1 = "#141420";
         seg2 = "#1a1a2e";
         seg3 = "#222240";
-        accent = "#0f5e53";   # dark muted teal
+        accent = "#152e2a";   # nearly invisible dark teal
         ws-bg = "#111118";
         fg = "#b4befe";
         dim = "#45475a";
@@ -1341,7 +1341,7 @@ in {
         }
         #clock {
           background: ${accent};
-          color: #e0e0e0;
+          color: #7a8a88;
           font-weight: bold;
           padding: 0 8px;
         }
