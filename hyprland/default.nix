@@ -75,6 +75,8 @@ let
 
 in {
 
+  programs.hyprland.enable = true;
+
   # ── System packages (only what's NOT already in other modules) ─────
   environment.systemPackages = with pkgs; [
     # Hyprland ecosystem
@@ -926,7 +928,6 @@ in {
       };
     };
 
-    programs.hyprland.enable = true;
 
     # ────────────────────────────────────────────────────────────────
     # Hyprlock — uses extraConfig for wallust source ordering
