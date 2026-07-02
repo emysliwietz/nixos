@@ -25,7 +25,7 @@
     ghostscript
     imagemagick
     yt-dlp
-    rembg
+    # rembg
   ];
 
   # Service menu files
