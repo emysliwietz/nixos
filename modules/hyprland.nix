@@ -1133,11 +1133,6 @@ in {
       size = 24;
     };
 
-    # ── Qt theming (needed outside KDE session) ──────────────────
-    qt = {
-      enable = true;
-      platformTheme.name = "qtct";
-    };
 
     # ── Systemd session vars ─────────────────────────────────────
     systemd.user.sessionVariables = {
