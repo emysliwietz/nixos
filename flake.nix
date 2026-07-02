@@ -6,17 +6,22 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, claude-code, ... }: {
+  outputs = { nixpkgs, home-manager, claude-code, plasma-manager, ... }: {
     nixosConfigurations.astaroth = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit claude-code; };
       modules = [
         ./configuration.nix
         home-manager.nixosModules.home-manager {
-	    }
+          home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
+        }
       ];
     };
   };
