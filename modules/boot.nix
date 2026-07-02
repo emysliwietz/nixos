@@ -8,7 +8,7 @@
     loader.systemd-boot.configurationLimit = 30;
 
     # Use latest kernel.
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_6_15;
 
     kernelModules = [
       "snd-aloop"
