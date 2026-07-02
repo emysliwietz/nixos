@@ -12,6 +12,10 @@
   programs.zsh.enable = true;
 
   home-manager.users.user = {
+    home.sessionPath = [
+    	"/home/user/.local/bin"
+    ];
+
     programs.zsh = {
       enable = true;
 
