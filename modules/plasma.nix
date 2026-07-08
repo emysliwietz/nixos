@@ -354,8 +354,6 @@
       kiorc."Executable scripts".behaviourOnLaunch = "open";
       krunnerrc.Plugins.krunner_keysEnabled = true;
       krunnerrc."Plugins/Favorites".plugins = "krunner_sessions,krunner_powerdevil,krunner_services,krunner_systemsettings";
-      kscreenlockerrc.Daemon.Autolock = false;
-      kscreenlockerrc.Daemon.LockOnResume = false;
       kservicemenurc.Show.SetAsWallpaperAndLockScreen = true;
       kservicemenurc.Show.compressfileitemaction = true;
       kservicemenurc.Show.extractfileitemaction = true;
@@ -378,12 +376,6 @@
       ktrashrc."\\/home\\/user\\/.local\\/share\\/Trash".Percent = 10;
       ktrashrc."\\/home\\/user\\/.local\\/share\\/Trash".UseSizeLimit = true;
       ktrashrc."\\/home\\/user\\/.local\\/share\\/Trash".UseTimeLimit = false;
-      kwalletrc.Wallet."Close When Idle" = false;
-      kwalletrc.Wallet."Close on Screensaver" = false;
-      kwalletrc.Wallet.Enabled = true;
-      kwalletrc.Wallet."First Use" = false;
-      kwalletrc.Wallet."Prompt on Open" = false;
-      kwalletrc."org.freedesktop.secrets".apiEnabled = false;
       kwinrc.Desktops.Id_1 = "8afa86a0-3b13-4d33-b8ba-dacf647d204e";
       kwinrc.Desktops.Id_10 = "84aed8f3-03f5-4958-8566-ef927b924076";
       kwinrc.Desktops.Id_2 = "405af8a1-3cdd-4c93-812c-7f899ceb77d8";
