@@ -14,6 +14,7 @@
   home-manager.users.user = {
     home.sessionPath = [
     	"/home/user/.local/bin"
+	"/home/user/dox/projects/bible/bin"
     ];
 
     programs.zsh = {
