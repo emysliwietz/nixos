@@ -1,5 +1,24 @@
 { config, lib, pkgs, ... }:
 
+let
+  # Flat-Remix ships no `network-bluetooth-*-symbolic` icons, which is the exact
+  # name Plasma 6's BlueDevil applet uses for the tray icon — so it fell back to a
+  # folder. Alias those names to the theme's own bluetooth artwork and refresh the
+  # GTK icon cache the package ships.
+  flat-remix-icon-theme-bt = pkgs.flat-remix-icon-theme.overrideAttrs (old: {
+    installPhase = (old.installPhase or "") + ''
+      for theme in $out/share/icons/Flat-Remix-*; do
+        sym="$theme/status/symbolic"
+        if [ -e "$sym/bluetooth-active-symbolic.svg" ]; then
+          ln -sf bluetooth-active-symbolic.svg   "$sym/network-bluetooth-symbolic.svg"
+          ln -sf bluetooth-active-symbolic.svg   "$sym/network-bluetooth-activated-symbolic.svg"
+          ln -sf bluetooth-disabled-symbolic.svg "$sym/network-bluetooth-inactive-symbolic.svg"
+          gtk-update-icon-cache -f -q "$theme" || true
+        fi
+      done
+    '';
+  });
+in
 {
 home-manager.users.user = {
 
@@ -25,7 +44,7 @@ home-manager.users.user = {
         };
 
         iconTheme = {
-          package = pkgs.flat-remix-icon-theme;
+	  package = flat-remix-icon-theme-bt;
           name = "Flat-Remix-Green-Dark";
         };
 

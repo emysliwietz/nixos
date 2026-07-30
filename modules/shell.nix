@@ -54,6 +54,11 @@
             sudo nixos-rebuild switch --flake /etc/nixos
         }
 
+	update() {
+	    sudo nix flake update --flake /etc/nixos
+	    rebuild
+	}
+
         nix-clean() {
             sudo nix-collect-garbage --delete-older-than 14d
             sudo nix-store --gc
