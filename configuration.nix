@@ -119,8 +119,6 @@
         # facebook messenger
         caprine
 
-	ausweisapp
-
 
         sqlite
 
@@ -146,6 +144,11 @@
           show_cpu_temperature = 1;
           show_program_path = 1;
         };
+      };
+
+      programs.ausweisapp = {
+ 	 enable = true;
+  	openFirewall = true;
       };
 
 
