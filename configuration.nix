@@ -146,11 +146,6 @@
         };
       };
 
-      programs.ausweisapp = {
- 	 enable = true;
-  	openFirewall = true;
-      };
-
 
       xdg.configFile."autostart/signal-desktop.desktop".text = ''
         [Desktop Entry]
@@ -171,6 +166,13 @@
       home.stateVersion = "25.11"; # Please read the comment before changing.
 
     };
+
+      programs.ausweisapp = {
+ 	 enable = true;
+  	openFirewall = true;
+      };
+
+
 
   programs.obs-studio = {
     enable = true;
