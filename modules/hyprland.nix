@@ -155,9 +155,6 @@ in {
       systemd.enable = true; # handles dbus env export automatically
 
       plugins = [
-        pkgs.hyprlandPlugins.hyprexpo    # workspace grid overview (Super+`)
-        pkgs.hyprlandPlugins.hyprtrails  # cursor trail effect
-        pkgs.hyprlandPlugins.hyprwinwrap # use any app as wallpaper
         pkgs.hyprlandPlugins.hyprfocus   # flash animation on focus change
         pkgs.hyprlandPlugins.hyprspace   # macOS Mission Control overview
       ];
@@ -421,22 +418,6 @@ in {
           inactive_timeout = 3;
         };
 
-        # ── Hyprexpo — workspace grid overview (like KDE Desktop Grid)
-        plugin.hyprexpo = {
-          columns = 3;
-          gap_size = 5;
-          bg_col = "rgb(111111)";
-          workspace_method = "center current";
-          enable_gesture = true;
-          gesture_distance = 300;
-          gesture_positive = true;
-        };
-
-        # ── Hyprtrails — cursor trail effect
-        plugin.hyprtrails = {
-          color = "rgba(00D3B8aa)"; # teal trail matching border gradient
-        };
-
         # ── Hyprfocus — disabled (user prefers border-only focus indicator)
         plugin.hyprfocus = {
           enabled = false;
@@ -455,15 +436,6 @@ in {
           exitOnSwitch = true;
           showNewWorkspace = true;
           showEmptyWorkspace = true;
-        };
-
-        # ── Hyprwinwrap — use a program as wallpaper
-        # Start your wallpaper app with the class "hyprwinwrap", e.g.:
-        #   kitty --class hyprwinwrap -e cava
-        #   kitty --class hyprwinwrap -e cmatrix
-        #   mpv --wid=0 --loop video.mp4  (use windowrule instead)
-        plugin.hyprwinwrap = {
-          class = "hyprwinwrap";
         };
 
         # ── Touchpad device ──────────────────────────────────────
@@ -666,8 +638,6 @@ in {
 
         # ── Keybinds ─────────────────────────────────────────────
         bind = [
-          # Workspace overview grid (like KDE Desktop Grid)
-          "$mainMod, grave, hyprexpo:expo, toggle"
           # Mission Control overview (like macOS — shows all windows)
           "$mainMod, o, overview:toggle,"
 

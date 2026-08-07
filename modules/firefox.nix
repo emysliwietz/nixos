@@ -17,6 +17,8 @@
         "la"
       ];
 
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
+
       policies = {
         HardwareAcceleration = true;
         DisableTelemetry = true;
