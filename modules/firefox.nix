@@ -17,7 +17,7 @@
         "la"
       ];
 
-      configPath = "${config.xdg.configHome}/mozilla/firefox";
+      configPath = ".mozilla/firefox";
 
       policies = {
         HardwareAcceleration = true;
