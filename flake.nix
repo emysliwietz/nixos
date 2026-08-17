@@ -1,9 +1,9 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-latest";
     claude-code.url = "github:sadjow/claude-code-nix";
     home-manager = {
-      url = "github:nix-community/home-manager/release-26.05";
+      url = "github:nix-community/home-manager/release-latest";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     plasma-manager = {
