@@ -153,6 +153,7 @@ in {
     wayland.windowManager.hyprland = {
       enable = true;
       systemd.enable = true; # handles dbus env export automatically
+      portalPackage = null;  # portal comes from programs.hyprland (NixOS module)
 
       plugins = [
         pkgs.hyprlandPlugins.hyprfocus   # flash animation on focus change

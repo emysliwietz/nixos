@@ -50,6 +50,7 @@
       # :checkers spell
       aspell
       aspellDicts.en
+      aspellDicts.de
 
       # :tools direnv
       direnv

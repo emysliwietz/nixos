@@ -43,6 +43,10 @@
       };
 
       initContent = ''
+        caffeine() {
+	    systemd-inhibit --what=idle:sleep --why="Keep screen awake" sleep infinity
+	}
+
         take() {
             mkdir -p "$1" && cd "$1"
         }
