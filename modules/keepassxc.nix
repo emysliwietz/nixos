@@ -26,6 +26,7 @@
         FdoSecrets = {
           Enabled = true; # Enable Secret Service Integration
           ShowNotification = false;
+	  ConfirmAccessItem = false;
         };
 
         GUI = {
