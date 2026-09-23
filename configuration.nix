@@ -156,6 +156,8 @@
       '';
 
 
+      xdg.configFile."autostart/blueman.desktop".text = "[Desktop Entry]\nType=Application\nName=Blueman Applet\nExec=blueman-applet\nIcon=blueman\nNotShowIn=KDE;\n";
+
       xdg.autostart.enable = true; # Enable creation of XDG autostart entries.
 
 
