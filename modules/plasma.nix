@@ -404,6 +404,7 @@
       kwinrc.Plugins.thumbnailasideEnabled = true;
       kwinrc.Plugins.translucencyEnabled = true;
       kwinrc.Plugins.windowapertureEnabled = false;
+      kwinrc.Script-krohnkite.ignoreClass = "krunner,yakuake,spectacle,kded5,xwaylandvideobridge,plasmashell,ksplashqml,org.kde.plasmashell,org.kde.polkit-kde-authentication-agent-1,org.kde.kruler,kruler,kwin_wayland,ksmserver-logout-greeter,KOReader";
       kwinrc.Script-krohnkite.noTileBorder = true;
       kwinrc.Script-krohnkite.screenGapBetween = 5;
       kwinrc.Script-krohnkite.screenGapBottom = 5;
