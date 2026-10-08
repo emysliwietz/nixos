@@ -256,7 +256,7 @@ in {
           "waybar"
           "wl-paste --type text --watch cliphist store"
           "wl-paste --type image --watch cliphist store"
-          "/home/user/.scripts/keepassunlock"
+          "keepassxc-autounlock"
           "signal-desktop --start-in-tray --no-sandbox --password-store=gnome-libsecret"
           "emacs --bg-daemon"
         ];

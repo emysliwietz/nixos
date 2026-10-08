@@ -36,6 +36,7 @@
 
       shellAliases = {
         vim = "nvim";
+        ssh = "TERM=xterm-256color ssh"; # remotes lack xterm-kitty terminfo
         sudo = "sudo ";
         ".." = "cd ..";
         "..." = "cd ../..";
