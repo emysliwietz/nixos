@@ -95,14 +95,6 @@
     { pkgs, ... }:
     {
       home.packages = with pkgs; [
-        (writeShellScriptBin "mpv" ''
-          exec nvidia-offload ${mpv}/bin/mpv "$@"
-        '')
-
-        (writeShellScriptBin "mpv-cpu" ''
-          exec ${mpv}/bin/mpv "$@"
-        '')
-
         (writeShellScriptBin "facebook-messenger" ''
           exec ${caprine}/bin/caprine "$@"
         '')
