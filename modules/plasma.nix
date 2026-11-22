@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 
 {
+  # Lets ~/.local/bin/dolphin-here (Meta+Space) see which window has focus.
+  home-manager.users.user.home.packages = [ pkgs.kdotool ];
+
   home-manager.users.user.programs.plasma = {
     enable = true;
     shortcuts = {
@@ -270,9 +273,10 @@
       plasmashell."toggle do not disturb" = [ ];
       "services/kitty.desktop"._launch = "Meta+Return";
       "services/net.local.dict-lookup.sh.desktop"._launch = "Meta+T";
+      "services/net.local.dolphin-here.desktop"._launch = "Meta+Space";
       "services/net.local.e.desktop"._launch = "Meta+Backspace";
       "services/org.flameshot.Flameshot.desktop".Capture = "Print";
-      "services/org.kde.dolphin.desktop"._launch = "Meta+Space";
+      "services/org.kde.dolphin.desktop"._launch = [ ];
       "services/org.kde.konsole.desktop"._launch = [ ];
       "services/org.kde.krunner.desktop"._launch = ["Meta+D" "Search" "Alt+Space" "Alt+F2"];
     };
