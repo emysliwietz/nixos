@@ -15,6 +15,9 @@
     # Quadro P500 is Pascal — open modules require Turing+, so keep this false
     open = false;
 
+    # Drivers after 580 dropped Pascal; the default one ignores the P500
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
+
     # Enables the nvidia-settings GUI
     nvidiaSettings = true;
 
